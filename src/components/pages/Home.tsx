@@ -302,7 +302,7 @@ export const Home: React.FC = () => {
 
                 const app = new Application(canvas);
                 appRef.current = app;
-                await app.load('/brain.splinecode');
+                await app.load(`${import.meta.env.BASE_URL}brain.splinecode`);
                 console.log('✅ Spline loaded successfully');
                 setIsLoading(false);
 
