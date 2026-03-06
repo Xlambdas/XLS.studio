@@ -13,7 +13,7 @@ The goal of this project is to create a structured digital environment that expl
 
 ---
 
-# Tech Stack
+## Tech Stack
 
 * React
 * TypeScript
@@ -24,7 +24,7 @@ The goal of this project is to create a structured digital environment that expl
 
 ---
 
-# Project Architecture
+## Project Architecture
 
 The project is organized to separate **logic, UI, and layout**.
 
@@ -51,9 +51,9 @@ src/
 
 ---
 
-# Core Concepts
+## Core Concepts
 
-## Spline Scene Management
+### Spline Scene Management
 
 The 3D scene is handled through a custom hook:
 
@@ -70,7 +70,7 @@ This ensures stable rendering across devices.
 
 ---
 
-## Section Navigation System
+### Section Navigation System
 
 Scrolling between sections is handled by:
 
@@ -86,7 +86,7 @@ This allows the 3D scene to react to page navigation.
 
 ---
 
-## Animation Toggle
+### Animation Toggle
 
 The interface provides a toggle that disables:
 
@@ -98,7 +98,7 @@ This improves performance on low-power devices.
 
 ---
 
-# Running the Project
+## Running the Project
 
 Install dependencies:
 
@@ -118,7 +118,7 @@ npm run preview
 
 ---
 
-# Deployment
+## Deployment
 
 The site is deployed via **GitHub Pages**.
 
@@ -132,7 +132,7 @@ base: "/XLS.studio/"
 
 ---
 
-# Future Plans
+## Future Plans
 
 Planned features:
 
@@ -144,7 +144,7 @@ Planned features:
 
 ---
 
-# Author
+## Author
 
 Created by **XLS.studio**
 

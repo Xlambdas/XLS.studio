@@ -1,6 +1,6 @@
 // pages/Home.tsx
 import React from 'react';
-// import { Header } from '../ui/header';
+import { Header } from '../ui/header';
 // import { Hero } from '../sections/Hero';
 // import { Profile } from '../sections/Profile';
 // import { useTheme } from '../../context/themeContext';
@@ -1100,8 +1100,8 @@ export const Home_save: React.FC = () => {
     );
 };
 
+
 export const Home: React.FC = () => {
-    const navigate = useNavigate();
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const appRef = useRef<Application | null>(null);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -1125,17 +1125,8 @@ export const Home: React.FC = () => {
         if (delta > 1000) {
             const fps = (frameCount.current * 1000) / delta;
 
-            let newDpr = dprRef.current;
-
-            if (fps < 40) newDpr -= 0.1;
-            if (fps > 55) newDpr += 0.05;
-
-            newDpr = Math.max(0.8, Math.min(newDpr, 1.5));
-
-            // only update if difference is meaningful
-            if (Math.abs(newDpr - dprRef.current) > 0.05) {
-                dprRef.current = newDpr;
-                updateCanvasResolution();
+            if (fps < 30) {
+                console.warn("Low FPS detected:", fps);
             }
 
             frameCount.current = 0;
@@ -1150,10 +1141,7 @@ export const Home: React.FC = () => {
 
         const canvas = canvasRef.current;
 
-        // clamp DPR so it never goes crazy
-        const dpr = animationsEnabled
-            ? Math.max(0.8, Math.min(dprRef.current, 1.5))
-            : 1;
+        const dpr = animationsEnabled ? dprRef.current : 1;
 
         const width = window.innerWidth;
         const height = window.innerHeight;
@@ -1174,6 +1162,13 @@ export const Home: React.FC = () => {
 
             try {
                 const canvas = canvasRef.current;
+
+                const deviceDpr = window.devicePixelRatio || 1;
+
+                // choose a stable DPR depending on device
+                if (deviceDpr > 2) dprRef.current = 1.2;
+                else if (deviceDpr > 1.5) dprRef.current = 1.1;
+                else dprRef.current = 1;
 
                 updateCanvasResolution();
 
@@ -1232,17 +1227,7 @@ export const Home: React.FC = () => {
         window.addEventListener('wheel', handleWheel, { passive: false });
 
         const handleResize = () => {
-            if (!canvasRef.current) return;
-
-            const dpr = animationsEnabled
-                ? Math.min(window.devicePixelRatio || 1, 1.5)
-                : 1;
-
-            canvasRef.current.width = window.innerWidth * dpr;
-            canvasRef.current.height = window.innerHeight * dpr;
-
-            canvasRef.current.style.width = `${window.innerWidth}px`;
-            canvasRef.current.style.height = `${window.innerHeight}px`;
+            updateCanvasResolution();
         };
 
         window.addEventListener('resize', handleResize);
@@ -1354,115 +1339,12 @@ export const Home: React.FC = () => {
             `}</style>
 
             {/* FIXED Header - always on top */}
-            <div style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                right: 0,
-                height: '70px',
-                zIndex: 10,
-                backgroundColor: '#18112D',
-            }}>
-                <div style={{
-                    display: 'flex',
-                    padding: '0.625rem 1.25rem',
-                    alignItems: 'center',
-                    gap: '0.625rem',
-                    height: '100%',
-                    maxWidth: '1800px',
-                    margin: '0 auto',
-                }}>
-                    <h1 style={{
-                        alignSelf: 'stretch',
-                        color: '#9C88D9',
-                        fontFamily: 'Montserrat',
-                        fontSize: '2.25rem',
-                        fontStyle: 'italic',
-                        fontWeight: 300,
-                        margin: 0,
-                        flex: 1,
-                    }}>
-                        XLS.studio
-                    </h1>
-                    <button
-                        onClick={() => setAnimationsEnabled(prev => !prev)}
-                        style={{
-                            width: 120,
-                            height: 30,
-                            borderRadius: 20,
-                            border: '1px solid #9C88D9',
-                            background: animationsEnabled ? '#9C88D9' : '#18112D',
-                            color: animationsEnabled ? '#18112D' : '#9C88D9',
-                            fontFamily: 'Inter',
-                            fontSize: '0.8rem',
-                            cursor: 'pointer',
-                            transition: 'all 0.3s ease'
-                        }}
-                    >
-                        {animationsEnabled ? "Animations ON" : "Animations OFF"}
-                    </button>
-                    <button
-                        className="hide-below-500"
-                        onClick={() => navigate('/accessibility')}
-                        style={{
-                            display: 'flex',
-                            height: '30px',
-                            minWidth: '180px',
-                            maxWidth: '302px',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            borderRadius: '30px',
-                            border: '1px solid #9C88D9',
-                            background: '#18112D',
-                            color: '#9C88D9',
-                            fontFamily: 'Inter',
-                            fontSize: '0.875rem',
-                            cursor: 'pointer',
-                            transition: 'all 0.3s ease',
-                        }}
-                        onMouseEnter={(e) => {
-                            (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 0 15px rgba(156, 136, 217, 0.3)';
-                        }}
-                        onMouseLeave={(e) => {
-                            (e.currentTarget as HTMLButtonElement).style.boxShadow = 'none';
-                        }}
-                    >
-                        <a
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'center',
-                                flex: '1 0 0',
-                                alignSelf: 'stretch',
-                                color: '#9C88D9',
-                                textAlign: 'center',
-                                fontFamily: 'Inter',    //'JetBrains Mono',
-                                fontSize: '0.875rem',
-                                fontStyle: 'italic',
-                                fontWeight: 100,
-                                lineHeight: 'normal',
-                            }}
-                        >
-                            Accessibility
-                        </a>
-                    </button>
-                    <button style={{
-                        width: 50,
-                        height: 30,
-                        background: '#9C88D9',
-                        border: 'none',
-                        borderRadius: '4px',
-                        cursor: 'pointer',
-                        transition: 'all 0.3s ease',
-                    }}
-                        onMouseEnter={(e) => {
-                            (e.currentTarget as HTMLButtonElement).style.background = '#B4A0E8';
-                        }}
-                        onMouseLeave={(e) => {
-                            (e.currentTarget as HTMLButtonElement).style.background = '#9C88D9';
-                        }} />
-                </div>
-            </div>
+            <Header
+                type="main"
+                animationsEnabled={animationsEnabled}
+                setAnimationsEnabled={setAnimationsEnabled}
+            />
+
             {/* fig_corps1 - Section 1 */}
             <div
                 style={{
@@ -1500,11 +1382,11 @@ export const Home: React.FC = () => {
                             }}>
                                 <div style={{
                                     display: 'flex',
-                                    padding: '0 90px 113px 121px',
+                                    padding: '0 clamp(20px,6vw,120px) clamp(40px,8vh,113px) clamp(20px,6vw,121px)',
                                     flexDirection: 'column',
                                     justifyContent: 'center',
                                     alignItems: 'center',
-                                    gap: '100px',
+                                    gap: 'clamp(30px,6vh,100px)',
                                     width: '100%',
                                 }}>
                                     <div style={{
@@ -1515,11 +1397,11 @@ export const Home: React.FC = () => {
                                         width: '100%',
                                     }}>
                                         <div style={{
-                                            height: 124,
+                                            height: 'auto',
                                             color: '#9C88D9',
                                             textAlign: 'right',
                                             fontFamily: 'Montserrat',
-                                            fontSize: 96,
+                                            fontSize: 'clamp(42px,8vw,96px)',
                                             fontStyle: 'italic',
                                             fontWeight: 500,
                                             lineHeight: 'normal',
@@ -1530,11 +1412,12 @@ export const Home: React.FC = () => {
                                         <div style={{
                                             color: '#9C88D9',
                                             fontFamily: 'JetBrains Mono',
-                                            fontSize: 32,
-                                            fontStyle: 'italic',
+                                            fontSize: 'clamp(16px,2.5vw,32px)',
+                                            maxWidth: 'clamp(260px,50vw,720px)',
+                                            textAlign: 'right',                                           fontStyle: 'italic',
                                             fontWeight: 500,
                                             lineHeight: 'normal',
-                                            minWidth: 372,
+                                            minWidth: 'clamp(372px,60vw,450px)',
                                             pointerEvents: 'none',
                                         }}>
                                             Explore cognitive science, quizzes & projects
@@ -1551,14 +1434,14 @@ export const Home: React.FC = () => {
                                         <div style={{ width: 310, height: 64, pointerEvents: 'auto' }}>
                                             <button
                                                 style={{
-                                                    width: '310px',
-                                                    height: '64px',
+                                                    width: 'clamp(200px,30vw,310px)',
+                                                    height: 'clamp(44px,7vh,64px)',
                                                     borderRadius: '40px',
                                                     border: '2px solid #9C88D9',
                                                     background: '#18112D',
                                                     color: '#9C88D9',
                                                     fontFamily: 'Montserrat',
-                                                    fontSize: 24,
+                                                    fontSize: 'clamp(16px,2vw,24px)',
                                                     fontWeight: 200,
                                                     cursor: 'pointer',
                                                     transition: 'all 0.3s ease',
@@ -1588,134 +1471,140 @@ export const Home: React.FC = () => {
                             {/* frame 22 */}
                             <div style={{
                                 display: 'flex',
-                                height: '854px',
-                                padding: '40px',
+                                flexDirection: 'column',
                                 justifyContent: 'space-between',
-                                alignItems: 'flex-end',
+                                alignItems: 'flex-start',
+                                width: '100%',
+                                height: '100%',
+                                padding: '0 clamp(20px,4vw,60px) clamp(40px,8vh,100px)',
                             }}>
+                                {/* title */}
+                                <h1
+                                    style={{
+                                        marginTop: 'clamp(0px,2vh,20px)',
+                                        width: '75vw',
+                                        textAlign: 'left',
+                                        hyphens: 'auto',
+                                        letterSpacing: '0.01em',
+                                        // maxWidth: 'min(75vw,720px)',
+                                        display: 'flex',
+                                        height: 'auto',
+                                        flexDirection: 'column',
+                                        justifyContent: 'center',
+                                        alignSelf: 'stretch',
+                                        color: '#9C88D9',
+                                        fontFamily: 'Montserrat',
+                                        fontSize: 'clamp(48px,5vw,80px)',
+                                        fontStyle: 'italic',
+                                        fontWeight: 500,
+                                        lineHeight: 'normal',
+                                    }}
+                                >
+                                    FROM KNOWLEDGE TO SYSTEMS
+                                </h1>
                                 {/* frame 18 */}
-                                <div style={{
-                                    display: 'flex',
-                                    width: '868px',
-                                    flexDirection: 'column',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'flex-start',
-                                    alignSelf: 'stretch',
-                                }}>
-                                    {/* title */}
-                                    <h1
-                                        style={{
-                                            display: 'flex',
-                                            height: '208.323px',
-                                            flexDirection: 'column',
-                                            justifyContent: 'center',
-                                            alignSelf: 'stretch',
+                                <div
+                                    className='flex-direction'
+                                    style={{
+                                        marginTop: 'clamp(40px,10vh,120px)',
+                                        // flexDirection: window.innerWidth < 1100 ? 'column' : 'row',
+                                        padding: '0 clamp(20px,4vw,40px)',
+                                        // justifyContent: 'space-between',
+                                        // alignItems: window.innerWidth < 1100 ? 'flex-start' : 'flex-end',
+                                        width: '100%',
+                                        height: 'auto',
+                                    }}
+                                >
+                                    {/* frame 20 */}
+                                    <div
+                                    className='sect2-descr'
+                                    style={{
+                                        display: 'flex',
+                                        paddingBottom: 'clamp(100px,10vh,250px)',
+                                        alignItems: 'center',
+                                        flex: '1 0 0',
+                                    }}>
+                                        <p style={{
+                                            width: 'clamp(360px,50vw,500px)',
                                             color: '#9C88D9',
-                                            fontFamily: 'Montserrat',
-                                            fontSize: 80,
-                                            fontStyle: 'italic',
-                                            fontWeight: 500,
+                                            textAlign: 'justify',
+                                            fontFamily: '"JetBrains Mono"',
+                                            fontSize: 'clamp(22px,2vw,36px)',
+                                            fontStyle: 'normal',
+                                            fontWeight: 400,
                                             lineHeight: 'normal',
-                                        }}
-                                    >
-                                        FROM KNOWLEDGE TO SYSTEMS
-                                    </h1>
-                                    {/* frame 19 */}
+                                            hyphens: 'auto',
+                                        }}>
+                                            I design structured digital environments that transform complex knowledge into interactive tools.
+                                            From cognitive science to UI systems, each project is built to explore how humans think, learn and interact.
+                                        </p>
+                                    </div>
+                                    {/* frame 21 */}
                                     <div style={{
                                         display: 'flex',
+                                        width: 'clamp(320px,40vw,569px)',
+                                        height: '135px',
+                                        padding: '0 20px',
+                                        flexDirection: 'column',
                                         justifyContent: 'space-between',
-                                        alignItems: 'flex-start',
-                                        alignSelf: 'stretch',
+                                        alignItems: 'flex-end',
+                                        marginLeft: 'auto',
+                                        // alignSelf: 'flex-end',
                                     }}>
-                                        <div style={{
+                                        <button style={{
                                             display: 'flex',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
-                                            flex: '1 0 0',
-                                        }}>
-                                            <p style={{
-                                                width: '552px',
-                                                height: '500px',
-                                                color: '#9C88D9',
-                                                textAlign: 'justify',
-                                                fontFamily: '"JetBrains Mono"',
-                                                fontSize: '36px',
-                                                fontStyle: 'normal',
-                                                fontWeight: 400,
-                                                lineHeight: 'normal',
-                                            }}>
-                                                I design structured digital environments that transform complex knowledge into interactive tools.
-                                                From cognitive science to UI systems, each project is built to explore how humans think, learn and interact.
-                                            </p>
-                                            <div style={{
-                                                width: '181px',
-                                                height: '281px',
-                                            }}>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {/* frame 21 */}
-                                <div style={{
-                                    display: 'flex',
-                                    height: '193px',
-                                    padding: '20px 80px 60px 20px',
-                                    flexDirection: 'column',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'flex-end',
-                                    flex: '0 0 auto',
-                                }}>
-                                    <button style={{
-                                        display: 'flex',
-                                        width: '321px',
-                                        height: '47px',
-                                        maxWidth: '321px',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        flexShrink: 0,
-                                        borderRadius: '40px',
-                                        border: '2px solid #9C88D9',
-                                        background: '#18112D',
-                                    }}>
-                                        <a style={{
-                                            display: 'flex',
-                                            width: '321px',
+                                            width: 'clamp(200px,30vw,321px)',
+                                            // width: '321px',
                                             height: '47px',
-                                            flexDirection: 'column',
+                                            maxWidth: '321px',
                                             justifyContent: 'center',
-                                            color: '#9C88D9',
-                                            textAlign: 'center',
-                                            fontFamily: 'Montserrat',
-                                            fontSize: '24px',
-                                            fontStyle: 'normal',
-                                            fontWeight: 200,
-                                            lineHeight: 'normal',
-                                        }}>My Projects</a>
-                                    </button>
-                                    <button style={{
-                                        height: '46.848px',
-                                        flexShrink: 0,
-                                        alignSelf: 'stretch',
-                                        width: '453px',
-                                        borderRadius: '30px',
-                                        border: '2px solid #9C88D9',
-                                        background: '#18112D',
-                                    }}>
-                                        <a style={{
-                                            display: 'flex',
-                                            width: '453px',
+                                            alignItems: 'center',
+                                            flexShrink: 0,
+                                            borderRadius: '40px',
+                                            border: '2px solid #9C88D9',
+                                            background: '#18112D',
+                                        }}>
+                                            <a style={{
+                                                display: 'flex',
+                                                width: 'clamp(200px,30vw,321px)',
+                                                height: '47px',
+                                                flexDirection: 'column',
+                                                justifyContent: 'center',
+                                                color: '#9C88D9',
+                                                textAlign: 'center',
+                                                fontFamily: 'Montserrat',
+                                                // fontSize: 'clamp(16px,2vw,24px)',
+                                                fontSize: '24px',
+                                                fontStyle: 'normal',
+                                                fontWeight: 200,
+                                                lineHeight: 'normal',
+                                            }}>My Projects</a>
+                                        </button>
+                                        <button style={{
                                             height: '46.848px',
-                                            flexDirection: 'column',
-                                            justifyContent: 'center',
-                                            color: '#9C88D9',
-                                            textAlign: 'center',
-                                            fontFamily: 'Montserrat',
-                                            fontSize: '24px',
-                                            fontStyle: 'normal',
-                                            fontWeight: 200,
-                                            lineHeight: 'normal',
-                                        }}>My Portfolio</a>
-                                    </button>
+                                            flexShrink: 0,
+                                            width: 'clamp(260px,40vw,453px)',
+                                            // width: '529px',
+                                            borderRadius: '30px',
+                                            border: '2px solid #9C88D9',
+                                            background: '#18112D',
+                                        }}>
+                                            <a style={{
+                                                display: 'flex',
+                                                width: 'clamp(260px,40vw,453px)',
+                                                height: '46.848px',
+                                                flexDirection: 'column',
+                                                justifyContent: 'center',
+                                                color: '#9C88D9',
+                                                textAlign: 'center',
+                                                fontFamily: 'Montserrat',
+                                                fontSize: '24px',
+                                                fontStyle: 'normal',
+                                                fontWeight: 200,
+                                                lineHeight: 'normal',
+                                            }}>My Portfolio</a>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1733,8 +1622,9 @@ export const Home: React.FC = () => {
                                 minHeight: 'calc(100vh - 140px)',
                                 maxWidth: '1400px',
                                 margin: '0 auto',
-                                paddingLeft: '120px',
-                                gap: '40px',
+                                paddingLeft: 'clamp(20px,6vw,120px)',
+                                paddingRight: 'clamp(20px,6vw,120px)',
+                                gap: 'clamp(30px,6vh,100px)',
                                 pointerEvents: 'none',
                             }}>
 
@@ -1742,7 +1632,7 @@ export const Home: React.FC = () => {
                                 <div style={{
                                     color: '#9C88D9',
                                     fontFamily: 'Montserrat',
-                                    fontSize: 96,
+                                    fontSize: 'clamp(42px,8vw,96px)',
                                     fontStyle: 'italic',
                                     fontWeight: 500,
                                     lineHeight: '1',
@@ -1751,53 +1641,61 @@ export const Home: React.FC = () => {
                                     THE SANDBOX
                                 </div>
 
-                                {/* DESCRIPTION */}
                                 <div style={{
-                                    color: '#9C88D9',
-                                    fontFamily: 'JetBrains Mono',
-                                    fontSize: 32,
-                                    fontStyle: 'italic',
-                                    fontWeight: 500,
-                                    maxWidth: '520px',
-                                    lineHeight: '1.4',
-                                    pointerEvents: 'none',
-                                    textAlign: 'center',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    gap: 'clamp(30px,6vh,100px)',
                                 }}>
-                                    A controlled environment for experimentation,
-                                    iteration, and structured exploration.
-                                </div>
+                                    {/* DESCRIPTION */}
+                                    <div style={{
+                                        color: '#9C88D9',
+                                        fontFamily: 'JetBrains Mono',
+                                        fontSize: 'clamp(16px,2.5vw,32px)',
+                                        maxWidth: 'clamp(260px,60vw,520px)',
+                                        fontStyle: 'italic',
+                                        fontWeight: 500,
+                                        lineHeight: '1.4',
+                                        pointerEvents: 'none',
+                                        textAlign: 'center',
+                                    }}>
+                                        A controlled environment for experimentation,
+                                        iteration, and structured exploration.
+                                    </div>
 
-                                {/* BUTTON */}
-                                <div style={{ pointerEvents: 'auto' }}>
-                                    <button
-                                        style={{
-                                            width: '310px',
-                                            height: '64px',
-                                            borderRadius: '40px',
-                                            border: '2px solid #9C88D9',
-                                            background: '#18112D',
-                                            color: '#9C88D9',
-                                            fontFamily: 'Montserrat',
-                                            fontSize: 24,
-                                            fontWeight: 200,
-                                            cursor: 'pointer',
-                                            transition: 'all 0.3s ease',
-                                        }}
-                                        onMouseEnter={(e) => {
-                                            (e.currentTarget as HTMLButtonElement).style.boxShadow =
-                                                '0 0 20px rgba(156, 136, 217, 0.4)';
-                                            (e.currentTarget as HTMLButtonElement).style.background =
-                                                'rgba(24, 17, 45, 0.8)';
-                                        }}
-                                        onMouseLeave={(e) => {
-                                            (e.currentTarget as HTMLButtonElement).style.boxShadow = 'none';
-                                            (e.currentTarget as HTMLButtonElement).style.background = '#18112D';
-                                        }}
-                                    >
-                                        Discover more
-                                    </button>
-                                </div>
+                                    {/* BUTTON */}
+                                    <div style={{ pointerEvents: 'auto' }}>
+                                        <button
+                                            style={{
+                                                width: 'clamp(200px,30vw,310px)',
+                                                height: 'clamp(44px,7vh,64px)',
+                                                fontSize: 'clamp(16px,2vw,24px)',
+                                                borderRadius: '40px',
+                                                border: '2px solid #9C88D9',
+                                                background: '#18112D',
+                                                color: '#9C88D9',
+                                                fontFamily: 'Montserrat',
+                                                fontWeight: 200,
+                                                cursor: 'pointer',
+                                                transition: 'all 0.3s ease',
+                                            }}
+                                            onMouseEnter={(e) => {
+                                                (e.currentTarget as HTMLButtonElement).style.boxShadow =
+                                                    '0 0 20px rgba(156, 136, 217, 0.4)';
+                                                (e.currentTarget as HTMLButtonElement).style.background =
+                                                    'rgba(24, 17, 45, 0.8)';
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                (e.currentTarget as HTMLButtonElement).style.boxShadow = 'none';
+                                                (e.currentTarget as HTMLButtonElement).style.background = '#18112D';
+                                            }}
+                                        >
+                                            Discover more
+                                        </button>
+                                    </div>
 
+                                </div>
                             </div>
                         </div>
                     </div>
