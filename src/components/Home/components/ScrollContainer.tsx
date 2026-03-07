@@ -12,7 +12,7 @@ export const ScrollContainer: React.FC<ScrollContainerProps> = ({
             width: '100%',
             overflow: 'hidden',
             pointerEvents: 'none',
-            zIndex: 1,
+            zIndex: 100,
         }}
     >
         <div

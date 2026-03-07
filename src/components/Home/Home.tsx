@@ -235,7 +235,7 @@ export const Home: React.FC = () => {
                         {/* title */}
                         <h2
                             style={{
-                                marginTop: 'clamp(80px, 10vh, 80px)',  // Changed from clamp(10px, 6vh, 20px)
+                                marginTop: 'clamp(10px, 10vh, 80px)',  // Changed from clamp(10px, 6vh, 20px)
                                 width: '75vw',
                                 fontSize: 'clamp(10px, 6vw, 60px)',
                                 fontFamily: FONTS.montserrat,
