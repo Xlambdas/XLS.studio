@@ -1114,8 +1114,8 @@ export const Home: React.FC = () => {
     const dprRef = useRef(1.2);
     const frameCount = useRef(0);
     const lastTime = useRef(performance.now());
-    const scrollAccumulator = useRef(0);
-    const SCROLL_THRESHOLD = 120;
+    // const scrollAccumulator = useRef(0);
+    // const SCROLL_THRESHOLD = 120;
     const lastScrollTime = useRef(0);
     const SCROLL_COOLDOWN = 900;
 
