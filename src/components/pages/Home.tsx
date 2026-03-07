@@ -1115,6 +1115,9 @@ export const Home: React.FC = () => {
     const frameCount = useRef(0);
     const lastTime = useRef(performance.now());
 
+    const isTouchDevice =
+        typeof window !== "undefined" &&
+        ("ontouchstart" in window || navigator.maxTouchPoints > 0);
 
     const monitorPerformance = () => {
         frameCount.current++;
@@ -1157,6 +1160,13 @@ export const Home: React.FC = () => {
         const initSpline = async () => {
             if (!canvasRef.current) {
                 console.error('Canvas ref not available');
+                return;
+            }
+
+            if (isTouchDevice) {
+                console.log("📱 Touch device detected — Spline disabled");
+                setAnimationsEnabled(false);
+                setIsLoading(false);
                 return;
             }
 
@@ -1243,7 +1253,7 @@ export const Home: React.FC = () => {
 
     useEffect(() => {
         const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-        if (prefersReducedMotion.matches) {
+        if (prefersReducedMotion.matches || isTouchDevice) {
             setAnimationsEnabled(false);
         }
     }, []);
@@ -1476,12 +1486,12 @@ export const Home: React.FC = () => {
                                 alignItems: 'flex-start',
                                 width: '100%',
                                 height: '100%',
-                                padding: '0 clamp(20px,4vw,60px) clamp(40px,8vh,100px)',
+                                padding: '0 clamp(20px,4vw,60px) clamp(30px,6vh,80px)',
                             }}>
                                 {/* title */}
                                 <h1
                                     style={{
-                                        marginTop: 'clamp(0px,2vh,20px)',
+                                        marginTop: 'clamp(0px,1vh,20px)',
                                         width: '75vw',
                                         textAlign: 'left',
                                         hyphens: 'auto',
@@ -1520,7 +1530,7 @@ export const Home: React.FC = () => {
                                     className='sect2-descr'
                                     style={{
                                         display: 'flex',
-                                        paddingBottom: 'clamp(100px,10vh,250px)',
+                                        marginBottom: 'clamp(40px,6vh,120px)',
                                         alignItems: 'center',
                                         flex: '1 0 0',
                                     }}>
