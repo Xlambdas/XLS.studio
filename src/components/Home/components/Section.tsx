@@ -8,6 +8,7 @@ export const Section: React.FC<SectionProps> = ({ children }) => (
                 height: '100%',
                 paddingTop: PADDING.verticalSection,
                 paddingBottom: PADDING.verticalSection,
+                boxSizing: 'border-box',
             }}
         >
             {children}
