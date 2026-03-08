@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useTheme } from '../../../context/ThemeContext';
+import { useTheme } from '../../../context/themeContext';
 import { getBaseButtonStyle, getColors } from '../constants/styles';
 import { type PrimaryButtonProps } from '../constants/types';
 
