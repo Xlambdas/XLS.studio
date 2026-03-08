@@ -15,10 +15,10 @@ import {
     usePerformanceMonitor,
 } from './hooks';
 import {
-    COLORS,
+    // COLORS,
     PADDING,
     FONTS,
-    baseTextStyle,
+    // baseTextStyle,
     HOME_CONFIG,
     KEYFRAMES,
 } from './constants';
@@ -36,7 +36,7 @@ export const Home: React.FC = () => {
     const [section, setSection] = useState(0);
 
     const { theme } = useTheme();
-    // const colors = getColors(theme);
+    const colors = getColors(theme);
     const textStyle = getBaseTextStyle(theme);
 
     const isTouchDevice =
@@ -120,7 +120,7 @@ export const Home: React.FC = () => {
 
     return (
         <div style={{
-            backgroundColor: COLORS.dark,
+            backgroundColor: colors.dark,
             position: 'relative',
             overflow: 'hidden',
             height: '100vh',
@@ -190,7 +190,7 @@ export const Home: React.FC = () => {
                                 width: '100%',
                             }}>
                                 <h1 style={{
-                                    fontFamily: FONTS.montserrat,
+                                    fontFamily: theme.typography.primaryFontFamily || FONTS.montserrat,
                                     fontSize: `clamp(${Math.round(36 * theme.typography.fontScale)}px, 8vw, ${Math.round(96 * theme.typography.fontScale)}px)`,
                                     fontStyle: 'italic',
                                     fontWeight: 500,
@@ -200,7 +200,7 @@ export const Home: React.FC = () => {
                                     WELCOME
                                 </h1>
                                 <p style={{
-                                    fontFamily: FONTS.jetbrains,
+                                    fontFamily: theme.typography.secondaryFontFamily || FONTS.jetbrains,
                                     fontSize: `clamp(${Math.round(16 * theme.typography.fontScale)}px, 2.5vw, ${Math.round(32 * theme.typography.fontScale)}px)`,
                                     maxWidth: 'clamp(260px,50vw,720px)',
                                     minWidth: 'clamp(240px,60vw,450px)',
@@ -250,7 +250,7 @@ export const Home: React.FC = () => {
                                 position: 'relative',
                                 height: 'fit-content',
                                 fontSize: `clamp(${Math.round(10 * theme.typography.fontScale)}px, 6vw, ${Math.round(60 * theme.typography.fontScale)}px)`,
-                                fontFamily: FONTS.montserrat,
+                                fontFamily: theme.typography.primaryFontFamily || FONTS.montserrat,
                                 fontStyle: 'italic',
                                 fontWeight: 500,
                                 flex: '0 0 auto',
@@ -282,7 +282,7 @@ export const Home: React.FC = () => {
                                     fontSize: `clamp(${Math.round(18 * theme.typography.fontScale)}px, 2vw, ${Math.round(36 * theme.typography.fontScale)}px)`,
                                     textAlign: 'justify',
                                     hyphens: 'auto',
-                                    fontFamily: FONTS.jetbrains,
+                                    fontFamily: theme.typography.secondaryFontFamily || FONTS.jetbrains,
                                     fontWeight: 400,
                                     ...textStyle,
                                 }}>
@@ -324,7 +324,7 @@ export const Home: React.FC = () => {
                     }}>
                         {/* TITLE */}
                         <h2 style={{
-                            fontFamily: FONTS.montserrat,
+                            fontFamily: theme.typography.primaryFontFamily || FONTS.montserrat,
                             fontSize: `clamp(${Math.round(42 * theme.typography.fontScale)}px, 8vw, ${Math.round(96 * theme.typography.fontScale)}px)`,
                             fontStyle: 'italic',
                             fontWeight: 500,
@@ -343,14 +343,14 @@ export const Home: React.FC = () => {
                         }}>
                             {/* DESCRIPTION */}
                             <p style={{
-                                fontFamily: FONTS.jetbrains,
+                                fontFamily: theme.typography.secondaryFontFamily || FONTS.jetbrains,
                                 fontSize: `clamp(${Math.round(16 * theme.typography.fontScale)}px, 2.5vw, ${Math.round(32 * theme.typography.fontScale)}px)`,
                                 maxWidth: 'clamp(260px,60vw,520px)',
                                 fontStyle: 'italic',
                                 fontWeight: 500,
                                 lineHeight: '1.4',
                                 textAlign: 'center',
-                                ...baseTextStyle,
+                                ...textStyle,
                             }}>
                                 A controlled environment for experimentation,
                                 iteration, and structured exploration.

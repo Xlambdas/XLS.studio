@@ -1,5 +1,8 @@
 import React from "react";
 import { useNavigate  } from "react-router-dom";
+import { useTheme } from '../../../context/themeContext';
+import { FONTS } from '../../Home/constants/styles';
+
 
 type HeaderProps = {
     type?: "main" | "default";
@@ -13,6 +16,7 @@ export const Header: React.FC<HeaderProps> = ({
     setAnimationsEnabled,
 }) => {
     const navigate = useNavigate();
+    const { theme } = useTheme();
 
     return (
         <div
@@ -23,7 +27,7 @@ export const Header: React.FC<HeaderProps> = ({
                 right: 0,
                 height: "clamp(60px, 6vh, 70px)",
                 zIndex: 10,
-                backgroundColor: "#18112D",
+                backgroundColor: theme.colors.dark,
             }}
         >
             <div
@@ -41,8 +45,8 @@ export const Header: React.FC<HeaderProps> = ({
                 <h1
                     style={{
                         alignSelf: "center",
-                        color: "#9C88D9",
-                        fontFamily: "Montserrat",
+                        color: theme.colors.primary,
+                        fontFamily: FONTS.montserrat,
                         fontSize: "clamp(1.5rem, 2.5vw, 2.25rem)",
                         fontStyle: "italic",
                         fontWeight: 300,
@@ -72,7 +76,7 @@ export const Header: React.FC<HeaderProps> = ({
                             color: animationsEnabled
                                 ? "#18112D"
                                 : "#9C88D9",
-                            fontFamily: "Inter",
+                            fontFamily: theme.typography.secondaryFontFamily || FONTS.jetbrains,
                             fontSize: "0.8rem",
                             cursor: "pointer",
                             transition: "all 0.3s ease",
@@ -96,9 +100,9 @@ export const Header: React.FC<HeaderProps> = ({
                         alignItems: "center",
                         borderRadius: "30px",
                         border: "1px solid #9C88D9",
-                        background: "#18112D",
-                        color: "#9C88D9",
-                        fontFamily: "JetBrains Mono",
+                        background: theme.colors.dark,
+                        color: theme.colors.primary,
+                        fontFamily: theme.typography.secondaryFontFamily || FONTS.jetbrains,
                         fontSize: "clamp(0.8rem, 1vw, 1rem)",
                         cursor: "pointer",
                         transition: "all 0.3s ease",
@@ -126,7 +130,7 @@ export const Header: React.FC<HeaderProps> = ({
                         alignSelf: "center",
                         width: "clamp(40px, 5vw, 50px)",
                         height: "clamp(28px, 4vw, 30px)",
-                        background: "#9C88D9",
+                        background: theme.colors.primary,
                         border: "none",
                         borderRadius: "4px",
                         cursor: "pointer",
@@ -134,11 +138,11 @@ export const Header: React.FC<HeaderProps> = ({
                     }}
                     onMouseEnter={(e) => {
                         (e.currentTarget as HTMLButtonElement).style.background =
-                            "#B4A0E8";
+                            theme.colors.primaryGlow;
                     }}
                     onMouseLeave={(e) => {
                         (e.currentTarget as HTMLButtonElement).style.background =
-                            "#9C88D9";
+                            theme.colors.primary;
                     }}
                 />
             </div>
@@ -149,10 +153,6 @@ export const Header: React.FC<HeaderProps> = ({
 
 
 
-
-
-
-import { useTheme } from "../../../context/themeContext";
 
 interface HeaderProps_old {
     className?: string;
