@@ -5,11 +5,13 @@ import React, {
     useEffect,
     useState,
 } from 'react';
-import { type AppTheme, DEFAULT_THEME } from './theme.types';
+import { type AppTheme } from '../theme/theme.types';
+import { DEFAULT_THEME } from '../theme/theme.defaults.ts';
 
-// ─────────────────────────────────────────────
+
+// =========
 // Context shape
-// ─────────────────────────────────────────────
+// =========
 interface ThemeContextValue {
     theme: AppTheme;
     updateTheme: (partial: Partial<AppTheme>) => void;
@@ -18,9 +20,9 @@ interface ThemeContextValue {
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
-// ─────────────────────────────────────────────
+// ========
 // Storage key
-// ─────────────────────────────────────────────
+// ========
 const STORAGE_KEY = 'app-theme';
 
 function loadTheme(): AppTheme {
@@ -33,9 +35,9 @@ function loadTheme(): AppTheme {
     return DEFAULT_THEME;
 }
 
-// ─────────────────────────────────────────────
+// =========
 // Provider
-// ─────────────────────────────────────────────
+// =========
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [theme, setTheme] = useState<AppTheme>(loadTheme);
 
@@ -65,16 +67,30 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         localStorage.removeItem(STORAGE_KEY);
     }, []);
 
+    const cssVariables = {
+        "--color-primary": theme.colors.primary,
+        "--color-primary-glow": theme.colors.primaryGlow,
+        "--color-secondary": theme.colors.secondary,
+        "--color-background": theme.colors.background,
+
+        "--font-primary": theme.typography.primaryFontFamily,
+        "--font-secondary": theme.typography.secondaryFontFamily,
+
+        "--font-scale": theme.typography.fontScale,
+        "--button-scale": theme.buttonScale,
+    } as React.CSSProperties;
+
     return (
         <ThemeContext.Provider value={{ theme, updateTheme, resetTheme }}>
-            {children}
+            <div style={cssVariables}>{children}</div>
         </ThemeContext.Provider>
     );
 };
 
-// ─────────────────────────────────────────────
+// =========
 // Hook
-// ─────────────────────────────────────────────
+// =========
+
 export function useTheme(): ThemeContextValue {
     const ctx = useContext(ThemeContext);
     if (!ctx) throw new Error('useTheme must be used inside <ThemeProvider>');

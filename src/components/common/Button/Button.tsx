@@ -1,9 +1,52 @@
-import React, { useState } from 'react';
-import { useTheme } from '../../../context/themeContext';
-import { getBaseButtonStyle, getColors } from '../constants/styles';
-import { type PrimaryButtonProps } from '../constants/types';
+// src/components/common/Button/Button.tsx
+
+import { cn } from "../../../lib/utils";
+import { type PrimaryButtonProps } from "../types";
+import "./button.css";
 
 export const PrimaryButton: React.FC<PrimaryButtonProps> = ({
+    children,
+    onClick,
+    ariaLabel,
+    disabled = false,
+    className,
+    variant = "default",
+}) => {
+    return (
+        <button
+            aria-label={ariaLabel}
+            disabled={disabled}
+            onClick={onClick}
+            className={cn(
+                "primary-button",
+                `primary-button--${variant}`,
+                className
+            )}
+        >
+            {children}
+        </button>
+    );
+};
+
+
+
+// to delete
+
+import { useState } from 'react';
+import { DEFAULT_THEME } from '../../../theme/theme.defaults.ts';
+import { useTheme } from '../../../context/themeContext.tsx';
+
+
+interface PrimaryButtonProps_old {
+    children: React.ReactNode;
+    style?: React.CSSProperties;
+    onClick?: () => void;
+    /** Accessible label when button text is not descriptive enough */
+    ariaLabel?: string;
+    disabled?: boolean;
+}
+
+export const PrimaryButton_old: React.FC<PrimaryButtonProps_old> = ({
     children,
     style,
     onClick,
@@ -14,8 +57,8 @@ export const PrimaryButton: React.FC<PrimaryButtonProps> = ({
     const [isFocused, setIsFocused] = useState(false);
     const { theme } = useTheme();
 
-    const colors = getColors(theme);
-    const baseStyle = getBaseButtonStyle(theme);
+    const colors = useTheme().theme.colors || DEFAULT_THEME.colors;
+    const baseStyle = useTheme().theme || DEFAULT_THEME;
     const isActive = (isHovered || isFocused) && !disabled;
 
     return (
@@ -49,3 +92,8 @@ export const PrimaryButton: React.FC<PrimaryButtonProps> = ({
         </button>
     );
 };
+
+
+
+// -------------------------------
+

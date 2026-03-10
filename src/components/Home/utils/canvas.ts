@@ -1,3 +1,5 @@
+// Home/utils/canvas.ts
+
 export const updateCanvasResolution = (
     canvasRef: React.RefObject<HTMLCanvasElement>,
     dpr: number,
@@ -15,6 +17,9 @@ export const updateCanvasResolution = (
     canvasRef.current.style.height = `${height}px`;
 };
 
+/**
+ * Canvas fill style helper – used by canvas.ts.
+ */
 export const getCanvasStyle = (isTouchDevice: boolean) => ({
     position: 'absolute' as const,
     top: 0,

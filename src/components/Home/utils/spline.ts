@@ -1,3 +1,4 @@
+// Home/utils/spline.ts
 import type { SplineApplication } from '../constants';
 
 export const initializeSpline = async (

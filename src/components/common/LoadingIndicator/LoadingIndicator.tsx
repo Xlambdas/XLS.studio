@@ -1,14 +1,54 @@
-import React from 'react';
-import { useTheme } from '../../../context/themeContext';
-import { getColors } from '../constants/styles';
-import { type LoadingIndicatorProps } from '../constants/types';
-
+// src/components/common/LoadingIndicator/LoadingIndicator.tsx
+import React from "react";
+import { type LoadingIndicatorProps } from "../types";
+import "./loading-indicator.css";
 
 export const LoadingIndicator: React.FC<LoadingIndicatorProps> = ({
+    message = "Loading…",
+}) => {
+    const { theme } = useTheme();
+
+    return (
+        <div
+            role="status"
+            aria-live="polite"
+            aria-label={message}
+            className="loading-overlay"
+            style={{
+                background: theme.colors.background,
+                fontFamily: theme.typography.secondaryFontFamily,
+                fontSize: `${theme.typography.fontScale}rem`,
+            }}
+            data-reduced-motion={theme.reducedMotion}
+        >
+            <div
+                aria-hidden="true"
+                className="loading-spinner"
+                style={{
+                    borderColor: theme.colors.primaryTransparent,
+                    borderTopColor: theme.colors.primary,
+                }}
+            />
+
+            <span className="loading-text">
+                {message}
+            </span>
+        </div>
+    );
+};
+
+
+
+
+// to delete :
+
+import { useTheme } from '../../../context/themeContext';
+
+export const LoadingIndicator_old: React.FC<LoadingIndicatorProps> = ({
     message = 'Loading…',
 }) => {
     const { theme } = useTheme();
-    const colors = getColors(theme);
+    const colors = theme.colors;
 
     return (
         <div
@@ -23,7 +63,7 @@ export const LoadingIndicator: React.FC<LoadingIndicatorProps> = ({
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                backgroundColor: colors.dark,
+                backgroundColor: colors.background,
                 gap: '16px',
             }}
         >

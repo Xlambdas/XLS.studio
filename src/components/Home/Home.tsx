@@ -1,10 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { Header } from '../ui'; // Adjust path as needed
+import { Header } from '../Header/Header.tsx';
 
 // Imports
 import {
-    PrimaryButton,
-    LoadingIndicator,
     ScrollContainer,
     Section,
 } from './components';
@@ -15,20 +13,18 @@ import {
     usePerformanceMonitor,
 } from './hooks';
 import {
-    // COLORS,
-    PADDING,
-    FONTS,
-    // baseTextStyle,
-    HOME_CONFIG,
-    KEYFRAMES,
-} from './constants';
-import {
     updateCanvasResolution,
     getCanvasStyle,
     updateSplineSection,
 } from './utils';
+import { PrimaryButton } from '../common/Button/Button.tsx';
+import { LoadingIndicator } from '../common/LoadingIndicator/LoadingIndicator.tsx';
+import { KEYFRAMES } from '../../styles/utils.ts';
+import { PADDING, FONTS } from '../../styles/tokens.ts';
+import { HOME_CONFIG } from '../../constants/home.config.ts';
 
-export const Home: React.FC = () => {
+
+export const Home_save: React.FC = () => {
     // const containerRef = useRef<HTMLDivElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null) as React.RefObject<HTMLCanvasElement>;
     const [animationsEnabled, setAnimationsEnabled] = useState(true);
@@ -36,8 +32,7 @@ export const Home: React.FC = () => {
     const [section, setSection] = useState(0);
 
     const { theme } = useTheme();
-    const colors = getColors(theme);
-    const textStyle = getBaseTextStyle(theme);
+    const colors = theme.colors;
 
     const isTouchDevice =
         typeof window !== 'undefined' &&
@@ -120,7 +115,7 @@ export const Home: React.FC = () => {
 
     return (
         <div style={{
-            backgroundColor: colors.dark,
+            backgroundColor: colors.background,
             position: 'relative',
             overflow: 'hidden',
             height: '100vh',
@@ -195,7 +190,7 @@ export const Home: React.FC = () => {
                                     fontStyle: 'italic',
                                     fontWeight: 500,
                                     lineHeight: 'normal',
-                                    ...textStyle,
+                                    color: theme.colors.primary,
                                 }}>
                                     WELCOME
                                 </h1>
@@ -206,7 +201,7 @@ export const Home: React.FC = () => {
                                     minWidth: 'clamp(240px,60vw,450px)',
                                     textAlign: 'right',
                                     fontWeight: 500,
-                                    ...textStyle,
+                                    color: theme.colors.primary,
                                 }}>
                                     Explore cognitive science, quizzes & projects
                                 </p>
@@ -221,7 +216,7 @@ export const Home: React.FC = () => {
                             }}>
                                 <div></div>
                                 <div style={{ pointerEvents: 'auto' }}>
-                                    <PrimaryButton>Enter the system</PrimaryButton>
+                                    <PrimaryButton className=''>Enter the system</PrimaryButton>
                                 </div>
                                 <div></div>
                             </div>
@@ -254,7 +249,7 @@ export const Home: React.FC = () => {
                                 fontStyle: 'italic',
                                 fontWeight: 500,
                                 flex: '0 0 auto',
-                                ...textStyle,
+                                color: theme.colors.primary,
                             }}
                         >
                             FROM KNOWLEDGE TO SYSTEMS
@@ -284,7 +279,7 @@ export const Home: React.FC = () => {
                                     hyphens: 'auto',
                                     fontFamily: theme.typography.secondaryFontFamily || FONTS.jetbrains,
                                     fontWeight: 400,
-                                    ...textStyle,
+                                    color: theme.colors.primary,
                                 }}>
                                     I design structured digital environments that transform complex knowledge into interactive tools.
                                     From cognitive science to UI systems, each project is built to explore how humans think, learn and interact.
@@ -299,8 +294,8 @@ export const Home: React.FC = () => {
                                 alignItems: 'flex-end',
                                 gap: 'clamp(10px,2vh,20px)',
                             }}>
-                                <PrimaryButton style={{ width: 'clamp(200px,30vw,321px)' }}>My Projects</PrimaryButton>
-                                <PrimaryButton style={{ width: 'clamp(260px,40vw,453px)' }}>My Portfolio</PrimaryButton>
+                                <PrimaryButton className='' style={{ width: 'clamp(200px,30vw,321px)' }}>My Projects</PrimaryButton>
+                                <PrimaryButton className='' style={{ width: 'clamp(260px,40vw,453px)' }}>My Portfolio</PrimaryButton>
                             </div>
                         </div>
                         <div></div>
@@ -329,7 +324,7 @@ export const Home: React.FC = () => {
                             fontStyle: 'italic',
                             fontWeight: 500,
                             lineHeight: '1',
-                            ...textStyle,
+                            color: theme.colors.primary,
                         }}>
                             THE SANDBOX
                         </h2>
@@ -350,7 +345,7 @@ export const Home: React.FC = () => {
                                 fontWeight: 500,
                                 lineHeight: '1.4',
                                 textAlign: 'center',
-                                ...textStyle,
+                                color: theme.colors.primary,
                             }}>
                                 A controlled environment for experimentation,
                                 iteration, and structured exploration.
@@ -358,7 +353,7 @@ export const Home: React.FC = () => {
 
                             {/* BUTTON */}
                             <div style={{ pointerEvents: 'auto' }}>
-                                <PrimaryButton>Discover more</PrimaryButton>
+                                <PrimaryButton className=''>Discover more</PrimaryButton>
                             </div>
                         </div>
                     </div>
@@ -369,9 +364,156 @@ export const Home: React.FC = () => {
 };
 
 
-import React from 'react';
-import { useTheme } from '../../context/themeContext';
-import { getBaseTextStyle, getColors } from './constants';
+
+export const Home: React.FC = () => {
+    // const containerRef = useRef<HTMLDivElement>(null);
+    const canvasRef = useRef<HTMLCanvasElement>(null) as React.RefObject<HTMLCanvasElement>;
+    const [animationsEnabled, setAnimationsEnabled] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
+    const [section, setSection] = useState(0);
+
+    const { theme } = useTheme();
+    const colors = theme.colors;
+
+    const isTouchDevice =
+        typeof window !== 'undefined' &&
+        ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+
+    // Hooks
+    const { appRef, dprRef, initSpline } = useSplineSetup(
+        canvasRef,
+        animationsEnabled,
+        isTouchDevice,
+        () => setIsLoading(false)
+    );
+
+    const {
+        // sectionRef,
+        // lastScrollTime,
+        handleSectionChange,
+        handleCanvasClick,
+    } = useScrollNavigation({
+        maxSection: HOME_CONFIG.maxSection,
+        onSectionChange: setSection,
+        onSplineUpdate: (section) => updateSplineSection(appRef.current, section),
+    });
+
+    const { handleTouchStart, handleTouchEnd } = useTouchNavigation({
+        onSwipe: handleSectionChange,
+    });
+
+    const { monitorPerformance } = usePerformanceMonitor();
+
+    // Effects
+    useEffect(() => {
+        initSpline();
+        monitorPerformance();
+
+        const handleWheel = (e: WheelEvent) => {
+            if (!animationsEnabled || isTouchDevice) return;
+            e.preventDefault();
+
+            const delta = e.deltaY;
+            if (Math.abs(delta) < HOME_CONFIG.deltaThreshold) return;
+            handleSectionChange(delta > 0 ? 1 : -1);
+        };
+
+        const handleResize = () => {
+            updateCanvasResolution(canvasRef, dprRef.current, animationsEnabled);
+        };
+
+        if (!isTouchDevice) {
+            window.addEventListener('wheel', handleWheel, { passive: false });
+        } else {
+            window.addEventListener('touchstart', handleTouchStart, { passive: true });
+            window.addEventListener('touchend', handleTouchEnd, { passive: true });
+        }
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            if (!isTouchDevice) window.removeEventListener('wheel', handleWheel);
+            if (isTouchDevice) {
+                window.removeEventListener('touchstart', handleTouchStart);
+                window.removeEventListener('touchend', handleTouchEnd);
+            }
+            appRef.current = null;
+        };
+    }, []);
+
+    // useEffect(() => {
+    //     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    //     if (prefersReducedMotion.matches && !isTouchDevice) {
+    //         setAnimationsEnabled(false);
+    //     }
+    // }, []);
+
+    useEffect(() => {
+        // Sync OS preference into theme if not already handled by ThemeProvider
+        if (theme.reducedMotion) setAnimationsEnabled(false);
+    }, [theme.reducedMotion]);
+
+    return (
+        <div style={{
+            backgroundColor: colors.background,
+            position: 'relative',
+            overflow: 'hidden',
+            height: '100vh',
+        }}>
+            {/* Canvas Layer */}
+            <div style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100vh',
+                zIndex: 0,
+                display: animationsEnabled ? 'block' : 'none',
+                touchAction: 'none',
+                pointerEvents: isTouchDevice ? 'none' : 'auto',
+            }}>
+                <canvas
+                    ref={canvasRef}
+                    onClick={handleCanvasClick}
+                    style={getCanvasStyle(isTouchDevice)}
+                />
+            </div>
+
+            {/* Loading Indicator */}
+            {isLoading && <LoadingIndicator />}
+
+            {/* Styles */}
+            <style>{KEYFRAMES}</style>
+
+            {/* Header */}
+            <Header
+                type="main"
+                animationsEnabled={animationsEnabled}
+                setAnimationsEnabled={setAnimationsEnabled}
+            />
+
+            {/* Content */}
+            <ScrollContainer section={section} animationsEnabled={animationsEnabled}>
+                {/* Section 1: Welcome */}
+                <Section ariaLabel="Welcome" active={section === 0}>
+                    <WelcomeSection theme={theme} />
+                </Section>
+
+                {/* Section 2: About */}
+                <Section ariaLabel="About" active={section === 1}>
+                    <AboutSection theme={theme} />
+                </Section>
+
+                {/* Section 3: Sandbox */}
+                <Section ariaLabel="The Sandbox" active={section === 2}>
+                    <SandboxSection theme={theme} />
+                </Section>
+            </ScrollContainer>
+        </div>
+    );
+};
+
 
 
 export const Home_new: React.FC = () => {
@@ -381,8 +523,8 @@ export const Home_new: React.FC = () => {
     const [section, setSection] = useState(0);
 
     const { theme } = useTheme();
-    const colors = getColors(theme);
-    const textStyle = getBaseTextStyle(theme);
+    const colors = theme.colors;
+    const textStyle = theme.typography;
 
     const isTouchDevice =
         typeof window !== 'undefined' &&
@@ -449,7 +591,7 @@ export const Home_new: React.FC = () => {
     }, [theme.reducedMotion]);
 
     return (
-        <div style={{ backgroundColor: colors.dark, position: 'fixed', overflow: 'hidden' }}>
+        <div style={{ backgroundColor: colors.background, position: 'fixed', overflow: 'hidden' }}>
             {/* Canvas Layer */}
             <div style={{
                 position: 'fixed',
@@ -531,7 +673,7 @@ export const Home_new: React.FC = () => {
                             }}>
                                 <div />
                                 <div style={{ pointerEvents: 'auto' }}>
-                                    <PrimaryButton>Enter the system</PrimaryButton>
+                                    <PrimaryButton className=''>Enter the system</PrimaryButton>
                                 </div>
                                 <div />
                             </div>
@@ -579,8 +721,8 @@ export const Home_new: React.FC = () => {
                                 </p>
                             </div>
                             <div style={{ display: 'flex', width: 'clamp(320px,40vw,569px)', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'flex-end', gap: 'clamp(10px,2vh,20px)' }}>
-                                <PrimaryButton style={{ width: 'clamp(200px,30vw,321px)' }}>My Projects</PrimaryButton>
-                                <PrimaryButton style={{ width: 'clamp(260px,40vw,453px)' }}>My Portfolio</PrimaryButton>
+                                <PrimaryButton className='' style={{ width: 'clamp(200px,30vw,321px)' }}>My Projects</PrimaryButton>
+                                <PrimaryButton className='' style={{ width: 'clamp(260px,40vw,453px)' }}>My Portfolio</PrimaryButton>
                             </div>
                         </div>
                         <div />
@@ -627,12 +769,148 @@ export const Home_new: React.FC = () => {
                                 iteration, and structured exploration.
                             </p>
                             <div style={{ pointerEvents: 'auto' }}>
-                                <PrimaryButton>Discover more</PrimaryButton>
+                                <PrimaryButton className=''>Discover more</PrimaryButton>
                             </div>
                         </div>
                     </div>
                 </Section>
 
+            </ScrollContainer>
+        </div>
+    );
+};
+
+
+
+// src/components/Home/Home.tsx
+
+import React from "react";
+import { useTheme } from "../../context/themeContext";
+
+import { WelcomeSection, AboutSection, SandboxSection } from "./sections";
+
+
+import "./home.css";
+
+export const Home_break: React.FC = () => {
+    const canvasRef = useRef<HTMLCanvasElement>(null) as React.RefObject<HTMLCanvasElement>;
+    const [animationsEnabled, setAnimationsEnabled] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
+    const [section, setSection] = useState(0);
+
+    const { theme } = useTheme();
+
+    const isTouchDevice =
+        typeof window !== "undefined" &&
+        ("ontouchstart" in window || navigator.maxTouchPoints > 0);
+
+    // Hooks (unchanged)
+    const { appRef, dprRef, initSpline } = useSplineSetup(
+        canvasRef,
+        animationsEnabled,
+        isTouchDevice,
+        () => setIsLoading(false)
+    );
+
+    const { handleSectionChange, handleCanvasClick } = useScrollNavigation({
+        maxSection: HOME_CONFIG.maxSection,
+        onSectionChange: setSection,
+        onSplineUpdate: (section) =>
+            updateSplineSection(appRef.current, section),
+    });
+
+    const { handleTouchStart, handleTouchEnd } = useTouchNavigation({
+        onSwipe: handleSectionChange,
+    });
+
+    const { monitorPerformance } = usePerformanceMonitor();
+
+    useEffect(() => {
+        initSpline();
+        monitorPerformance();
+
+        const handleWheel = (e: WheelEvent) => {
+            if (!animationsEnabled || isTouchDevice) return;
+
+            e.preventDefault();
+
+            const delta = e.deltaY;
+
+            if (Math.abs(delta) < HOME_CONFIG.deltaThreshold) return;
+
+            handleSectionChange(delta > 0 ? 1 : -1);
+        };
+
+        const handleResize = () => {
+            updateCanvasResolution(canvasRef, dprRef.current, animationsEnabled);
+        };
+
+        if (!isTouchDevice) {
+            window.addEventListener("wheel", handleWheel, { passive: false });
+        } else {
+            window.addEventListener("touchstart", handleTouchStart, { passive: true });
+            window.addEventListener("touchend", handleTouchEnd, { passive: true });
+        }
+
+        window.addEventListener("resize", handleResize);
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+            if (!isTouchDevice) window.removeEventListener("wheel", handleWheel);
+            if (isTouchDevice) {
+                window.removeEventListener("touchstart", handleTouchStart);
+                window.removeEventListener("touchend", handleTouchEnd);
+            }
+        };
+    }, []);
+
+    useEffect(() => {
+        if (theme.reducedMotion) setAnimationsEnabled(false);
+    }, [theme.reducedMotion]);
+
+    return (
+        <div
+            className="home"
+            style={{ backgroundColor: theme.colors.background }}
+        >
+            {/* Canvas */}
+            <div
+                className="home-canvas-layer"
+                style={{
+                    display: animationsEnabled ? "block" : "none",
+                    pointerEvents: isTouchDevice ? "none" : "auto",
+                }}
+            >
+                <canvas
+                    ref={canvasRef}
+                    onClick={handleCanvasClick}
+                    className="home-canvas"
+                />
+            </div>
+
+            {isLoading && <LoadingIndicator />}
+
+            <Header
+                type="main"
+                animationsEnabled={animationsEnabled}
+                setAnimationsEnabled={setAnimationsEnabled}
+            />
+
+            <ScrollContainer
+                section={section}
+                animationsEnabled={animationsEnabled}
+            >
+                <Section ariaLabel="Welcome" active={section === 0}>
+                    <WelcomeSection theme={theme} />
+                </Section>
+
+                <Section ariaLabel="About" active={section === 1}>
+                    <AboutSection theme={theme} />
+                </Section>
+
+                <Section ariaLabel="Sandbox" active={section === 2}>
+                    <SandboxSection theme={theme} />
+                </Section>
             </ScrollContainer>
         </div>
     );

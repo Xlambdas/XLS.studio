@@ -1,6 +1,6 @@
 import { useRef, useCallback } from 'react';
 import { initializeSpline } from '../utils';
-import { HOME_CONFIG } from '../constants';
+import { HOME_CONFIG } from '../../../constants/home.config.ts';
 import { setDPRForDevice, updateCanvasResolution } from '../utils';
 
 export const useSplineSetup = (

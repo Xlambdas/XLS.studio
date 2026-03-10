@@ -1,113 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../context/themeContext';
 import { useState } from 'react';
-import { AVAILABLE_PRIMARY_FONTS, AVAILABLE_SECONDARY_FONTS, BUTTON_SCALE_OPTIONS, DEFAULT_THEME, FONT_SCALE_OPTIONS } from '../context/theme.types';
+import { DEFAULT_THEME } from '../theme/theme.defaults';
+import { AVAILABLE_PRIMARY_FONTS, AVAILABLE_SECONDARY_FONTS, BUTTON_SCALE_OPTIONS, FONT_SCALE_OPTIONS } from '../theme/theme.options';
 import { FONTS } from '../components/Home/Home_save';
-
-export const AccessibilityPage_old: React.FC = () => {
-    const navigate = useNavigate();
-    const { theme, updateTheme } = useTheme();
-
-    const handleColorChange = (colorKey: 'primary' | 'dark', value: string) => {
-        updateTheme({
-            colors: {
-                ...theme.colors,
-                [colorKey]: value,
-            },
-        });
-    };
-
-    return (
-        <div className="min-h-screen p-8" style={{ backgroundColor: theme.colors.dark }}>
-            <div className="max-w-2xl mx-auto">
-                <button
-                    onClick={() => navigate('/')}
-                    className="mb-8 text-xl font-light italic"
-                    style={{ color: theme.colors.primary }}
-                >
-                    ← Back
-                </button>
-
-                <h1
-                    className="text-4xl font-light italic mb-12"
-                    style={{ color: theme.colors.primary }}
-                >
-                    Accessibility Settings
-                </h1>
-
-                {/* Color Settings */}
-                <div className="space-y-8">
-                    {/* Primary Color */}
-                    <div className="p-6 rounded-lg border-2" style={{ borderColor: theme.colors.primary }}>
-                        <label
-                            className="block text-2xl font-light italic mb-4"
-                            style={{ color: theme.colors.primary }}
-                        >
-                            Primary Color (Accent)
-                        </label>
-                        <div className="flex gap-4 items-center">
-                            <input
-                                type="color"
-                                value={theme.colors.primary}
-                                onChange={(e) => handleColorChange('primary', e.target.value)}
-                                className="w-20 h-20 cursor-pointer"
-                            />
-                            <span
-                                className="text-lg font-light"
-                                style={{ color: theme.colors.primary }}
-                            >
-                                {theme.colors.primary}
-                            </span>
-                        </div>
-                    </div>
-
-                    {/* Dark Color */}
-                    <div className="p-6 rounded-lg border-2" style={{ borderColor: theme.colors.primary }}>
-                        <label
-                            className="block text-2xl font-light italic mb-4"
-                            style={{ color: theme.colors.primary }}
-                        >
-                            Background Color
-                        </label>
-                        <div className="flex gap-4 items-center">
-                            <input
-                                type="color"
-                                value={theme.colors.dark}
-                                onChange={(e) => handleColorChange('dark', e.target.value)}
-                                className="w-20 h-20 cursor-pointer"
-                            />
-                            <span
-                                className="text-lg font-light"
-                                style={{ color: theme.colors.primary }}
-                            >
-                                {theme.colors.dark}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Preview */}
-                <div className="mt-12 p-6 rounded-lg border-2" style={{ borderColor: theme.colors.primary }}>
-                    <h2
-                        className="text-2xl font-light italic mb-4"
-                        style={{ color: theme.colors.primary }}
-                    >
-                        Preview
-                    </h2>
-                    <div
-                        className="p-4 rounded text-2xl font-light italic text-center"
-                        style={{
-                            backgroundColor: theme.colors.primary,
-                            color: theme.colors.dark,
-                        }}
-                    >
-                        This is your preview
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-};
 
 
 export const AccessibilityPage: React.FC = () => {
@@ -115,7 +11,7 @@ export const AccessibilityPage: React.FC = () => {
     const { theme, updateTheme } = useTheme();
     const [activeTab, setActiveTab] = useState<'colors' | 'typography' | 'sizes' | 'motion'>('colors');
 
-    const handleColorChange = (colorKey: 'primary' | 'dark', value: string) => {
+    const handleColorChange = (colorKey: 'primary' | 'secondary' | 'background', value: string) => {
         updateTheme({
             colors: {
                 ...theme.colors,
@@ -166,7 +62,7 @@ export const AccessibilityPage: React.FC = () => {
 
 
     return (
-        <div className="min-h-screen p-8" style={{ backgroundColor: theme.colors.dark }}>
+        <div className="min-h-screen p-8" style={{ backgroundColor: theme.colors.background }}>
             <div className="max-w-4xl mx-auto">
                 <button
                     onClick={() => navigate('/')}
@@ -245,18 +141,36 @@ export const AccessibilityPage: React.FC = () => {
 
                         <div className="p-6 rounded-lg border-2" style={{ borderColor: theme.colors.primary }}>
                             <label className="block text-2xl font-light italic mb-4" style={{ color: theme.colors.primary }}>
+                                Secondary Color
+                            </label>
+                            <div className="flex gap-4 items-center">
+                                <input
+                                    type="color"
+                                    value={theme.colors.secondary}
+                                    onChange={(e) => handleColorChange('secondary', e.target.value)}
+                                    className="w-20 h-20 cursor-pointer"
+                                    tabIndex={0}
+                                />
+                                <span className="text-lg font-light" style={{ color: theme.colors.primary }}>
+                                    {theme.colors.secondary}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div className="p-6 rounded-lg border-2" style={{ borderColor: theme.colors.primary }}>
+                            <label className="block text-2xl font-light italic mb-4" style={{ color: theme.colors.primary }}>
                                 Background Color
                             </label>
                             <div className="flex gap-4 items-center">
                                 <input
                                     type="color"
-                                    value={theme.colors.dark}
-                                    onChange={(e) => handleColorChange('dark', e.target.value)}
+                                    value={theme.colors.background}
+                                    onChange={(e) => handleColorChange('background', e.target.value)}
                                     className="w-20 h-20 cursor-pointer"
                                     tabIndex={0}
                                 />
                                 <span className="text-lg font-light" style={{ color: theme.colors.primary }}>
-                                    {theme.colors.dark}
+                                    {theme.colors.background}
                                 </span>
                             </div>
                         </div>
@@ -426,8 +340,8 @@ export const AccessibilityPage: React.FC = () => {
                 {/* Live Preview */}
                 <div className="mt-16 p-8 rounded-xl border-4" style={{
                     borderColor: theme.colors.primary,
-                    backgroundColor: theme.colors.primary,
-                    color: theme.colors.dark
+                    backgroundColor: theme.colors.background,
+                    color: theme.colors.primary,
                 }}>
                     <h2 className="text-3xl font-light italic mb-6" style={{
                         fontFamily: theme.typography.primaryFontFamily,
@@ -439,7 +353,7 @@ export const AccessibilityPage: React.FC = () => {
                         fontFamily: theme.typography.secondaryFontFamily,
                         fontSize: `${24 * theme.typography.fontScale}px`,
                         lineHeight: '1.6',
-                        backgroundColor: theme.colors.dark,
+                        backgroundColor: theme.colors.secondary,
                         color: theme.colors.primary,
                         minHeight: '200px',
                         display: 'flex',
@@ -465,7 +379,7 @@ export const AccessibilityPage: React.FC = () => {
                     }}
                     tabIndex={0}
                 >
-                    🔄 Reset All Settings to Default
+                    Reset All Settings to Default
                 </button>
             </div>
         </div>

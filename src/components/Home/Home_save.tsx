@@ -1,6 +1,6 @@
 import React from 'react';
-import { Header } from '../ui/header';
-import { PrimaryButton } from '../ui/index';
+import { Header } from '../Header';
+// import { PrimaryButton } from '../common/Button/Button.tsx';
 
 import { useEffect, useRef, useState } from 'react';
 import { Application } from '@splinetool/runtime';
@@ -341,7 +341,7 @@ export const Home_save_2: React.FC = () => {
                             }}>
                                 <div style={{ width: '435px', height: '45px' }} />
                                 <div style={{ width: 310, height: 64, pointerEvents: 'auto' }}>
-                                    <PrimaryButton>Enter the system</PrimaryButton>
+                                    <p>Enter the system</p>
                                 </div>
                                 <div style={{ width: 49, height: 45 }} />
                             </div>
@@ -433,8 +433,8 @@ export const Home_save_2: React.FC = () => {
                                 marginLeft: 'auto',
                                 // alignSelf: 'flex-end',
                             }}>
-                                <PrimaryButton style={{ width: 'clamp(200px,30vw,321px)' }}>My Projects</PrimaryButton>
-                                <PrimaryButton style={{ width: 'clamp(260px,40vw,453px)' }}>My Portfolio</PrimaryButton>
+                                <p style={{ width: 'clamp(200px,30vw,321px)' }}>My Projects</p>
+                                <p style={{ width: 'clamp(260px,40vw,453px)' }}>My Portfolio</p>
                             </div>
                         </div>
                     </div>
@@ -494,7 +494,7 @@ export const Home_save_2: React.FC = () => {
 
                             {/* BUTTON */}
                             <div style={{ pointerEvents: 'auto' }}>
-                                <PrimaryButton>Discover more</PrimaryButton>
+                                <p>Discover more</p>
                             </div>
                         </div>
                     </div>
@@ -810,7 +810,7 @@ export const Home: React.FC = () => {
                             }}>
                                 <div style={{ width: '435px', height: '45px' }} />
                                 <div style={{ pointerEvents: 'auto' }}>
-                                    <PrimaryButton>Enter the system</PrimaryButton>
+                                    <p>Enter the system</p>
                                 </div>
                                 <div style={{ width: '49px', height: '45px' }} />
                             </div>
@@ -884,8 +884,8 @@ export const Home: React.FC = () => {
                                 alignItems: 'flex-end',
                                 gap: 'clamp(10px,2vh,20px)',
                             }}>
-                                <PrimaryButton style={{ width: 'clamp(200px,30vw,321px)' }}>My Projects</PrimaryButton>
-                                <PrimaryButton style={{ width: 'clamp(260px,40vw,453px)' }}>My Portfolio</PrimaryButton>
+                                <p>My Projects</p>
+                                <p>My Portfolio</p>
                             </div>
                         </div>
                     </div>
@@ -941,7 +941,7 @@ export const Home: React.FC = () => {
 
                             {/* BUTTON */}
                             <div style={{ pointerEvents: 'auto' }}>
-                                <PrimaryButton>Discover more</PrimaryButton>
+                                <p>Discover more</p>
                             </div>
                         </div>
                     </div>

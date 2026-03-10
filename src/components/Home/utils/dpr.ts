@@ -1,4 +1,5 @@
-import { HOME_CONFIG } from '../constants';
+// Home/utils/dpr.ts
+import { HOME_CONFIG } from '../../../constants/home.config.ts';
 
 export const setDPRForDevice = (
     isTouchDevice: boolean,

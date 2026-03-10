@@ -1,0 +1,61 @@
+/* Base button */
+
+.primary-button {
+
+    border-radius: 40px;
+    border: 2px solid var(--color-primary);
+
+    padding: 5px 15px;
+
+    background: var(--color-dark);
+    color: var(--color-primary);
+
+    font-family: var(--font-secondary);
+    font-size: clamp(16px, 2vw, 24px);
+
+    font-weight: 200;
+
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+
+    min-height: 44px;
+    min-width: 44px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.primary-button:hover {
+    box-shadow: 0 0 20px var(--color-primary-glow);
+}
+
+.primary-button:focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 3px;
+}
+
+.primary-button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+/* Variants */
+
+.primary-button--default {
+    width: auto;
+}
+
+.primary-button--small {
+    width: clamp(200px, 30vw, 321px);
+}
+
+.primary-button--large {
+    width: clamp(260px, 40vw, 453px);
+}
+
+.primary-button--cta {
+    width: clamp(260px, 40vw, 450px);
+    height: clamp(44px, 7vh, 64px);
+}

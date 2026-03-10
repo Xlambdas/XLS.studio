@@ -1,5 +1,5 @@
 import { useRef, useCallback } from 'react';
-import { HOME_CONFIG } from '../constants';
+import { HOME_CONFIG } from '../../../constants/home.config.ts';
 
 interface UseTouchNavigationProps {
     onSwipe: (direction: number) => void;

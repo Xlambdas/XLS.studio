@@ -1,102 +1,19 @@
 @import "tailwindcss";
+@import "./variables.css";
+@import "./layout.css";
 
-/* Your design tokens here (no tailwind.config.js needed) */
-@theme {
-
-
-
-    /* default  */
-    --color-primary: #444A23;
-    --color-primary-light: #B2B18F;
-    --color-primary-dark: #363C18;
-    --color-text-dark: #363C18;
-    --color-text-light: #B2B18F;
-
-
-    /* Destructive for buttons */
-    --color-destructive: #ef4444;
-    --color-destructive-foreground: white;
-
-    /* Equip-card specific */
-    --color-card-bg: var(--color-primary-light);
-    --color-card-shadow: 0 4px 6px -1px rgba(54, 60, 24, 0.15);
-
-    --radius-xl: 12px;
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-
-    /* -------------- */
-    /* new parameters */
-    --color-purple: #9C88D9;      /* Main accent */
-    --color-dark: #18112D;        /* Backgrounds */
-    --radius-2xl: 30px;             /* Large buttons */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
-
-/* Optional: Rare component layer for complex base styles */
-@layer components {
-  .card-image {
-    @apply w-64 h-64 rounded-lg object-cover shrink-0 mb-6 md:mb-0;
-  }
-  
-  .card-content {
-    @apply flex flex-col flex-1 min-w-0;
-  }
+html,
+body,
+#root {
+    height: 100%;
 }
 
-
-.hide-below-500 {
-    display: flex; /* default shown */
-  }
-  
-  /* hide when viewport width is less than 500px */
-  @media (max-width: 499px) {
-    .hide-below-500 {
-      display: none !important;
-    }
-  }
-
-
-
-.hide-below-600 {
-  display: block;
-}
-@media (max-width: 600px) {
-  .hide-below-600 {
-    display: none;
-  }
-}
-
-.flex-direction {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-end;
-}
-
-@media (max-width: 1200px) {
-  .flex-direction {
-    flex-direction: column;
-    align-items: center;
-  }
-}
-
-.sect2-descr {
-    justify-content: 'flex-start';
-}
-
-@media (max-width: 600px) {
-    .sect2-descr {
-        justify-content: center;
-    }
-}
-
-.responsive-button {
-    width: clamp(260px, 40vw, 450px);
-    height: clamp(44px, 7vh, 64px);
-}
-
-.primary-button {
-    width: clamp(200px,30vw,310px);
-    height: clamp(44px,7vh,64px);
+body {
+    margin: 0;
 }
