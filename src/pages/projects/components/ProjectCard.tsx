@@ -19,55 +19,54 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
 
     return (
         <div
-            className="shrink-0 lg:w-[calc(50%-1rem)] snap-start p-6 sm:p-8 rounded-xl border-2 flex flex-col h-full w-full min-h-[60vh] sm:min-h-[70vh] lg:min-h-auto"
-            // className="sm:w-[85%]  min-h-[60vh] sm:min-h-[70vh] lg:min-h-auto"
-
+            className="shrink-0 lg:w-[calc(50%-1rem)] snap-start p-6 sm:p-8 rounded-xl border-2 flex flex-col h-full w-full min-h-[60vh] sm:min-h-[70vh]"
             style={{
                 borderColor: theme.colors.primary,
                 backgroundColor: theme.colors.secondary,
             }}
         >
-            <div className="flex flex-wrap sm:flex-nowrap items-start sm:items-center justify-between gap-2 mb-3">
-                {/* Title */}
-                <h2
-                    className="text-xl sm:text-2xl lg:text-3xl font-light italic mb-2"
-                    style={{
-                        color: theme.colors.primary,
-                        fontFamily: theme.typography.primaryFontFamily,
-                    }}
-                >
-                    {title}
-                </h2>
 
-                {/* Status Badge */}
-                <span
-                    className="text-xs sm:text-sm px-3 py-1 rounded-md font-medium w-full sm:w-auto text-right" //inline-block
-                    style={{
-                        backgroundColor: statusColors[status],
-                        color: "#000",
-                    }}
-                >
-                    {status.replace("-", " ")}
-                </span>
+            {/* HEADER */}
+            <div>
+                <div className="flex flex-wrap sm:flex-nowrap items-start sm:items-center justify-between gap-2 mb-3">
+                    <h2
+                        className="text-xl sm:text-2xl lg:text-3xl font-light italic"
+                        style={{
+                            color: theme.colors.primary,
+                            fontFamily: theme.typography.primaryFontFamily,
+                        }}
+                    >
+                        {title}
+                    </h2>
+
+                    <span
+                        className="text-xs sm:text-sm px-3 py-1 rounded-md font-medium w-full sm:w-auto text-right"
+                        style={{
+                            backgroundColor: statusColors[status],
+                            color: "#000",
+                        }}
+                    >
+                        {status.replace("-", " ")}
+                    </span>
+                </div>
+
+                {subtitle && (
+                    <h3
+                        className="text-sm sm:text-base italic mb-3"
+                        style={{
+                            color: theme.colors.primary,
+                            fontFamily: theme.typography.secondaryFontFamily,
+                            opacity: 0.8,
+                        }}
+                    >
+                        {subtitle}
+                    </h3>
+                )}
             </div>
 
-            {/* Subtitle */}
-            {subtitle && (
-                <h3
-                    className="text-sm sm:text-base italic mb-3"
-                    style={{
-                        color: theme.colors.primary,
-                        fontFamily: theme.typography.secondaryFontFamily,
-                        opacity: 0.8,
-                    }}
-                >
-                    {subtitle}
-                </h3>
-            )}
-
-            {/* Description */}
+            {/* DESCRIPTION */}
             <p
-                className="flex-1 text-sm sm:text-base leading-relaxed mb-4 overflow-hidden text-justify"
+                className="text-sm sm:text-base leading-relaxed mb-4 text-justify"
                 style={{
                     color: theme.colors.primary,
                     fontFamily: theme.typography.secondaryFontFamily,
@@ -78,31 +77,30 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
                 {description}
             </p>
 
-            {/* bottom section */}
-            <div className="flex flex-col gap-4 mt-4">
-                {/* Optional Image */}
-                {img && (
+            {/* FLEXIBLE IMAGE AREA */}
+            {img && (
+                <div className="flex-1 flex items-center justify-center overflow-hidden rounded-lg">
                     <img
                         src={img}
                         alt={title}
-                        className="w-full object-cover rounded-lg "
-                        style={{ borderColor: theme.colors.primary }}
+                        className="max-w-full max-h-full object-contain"
                     />
-                )}
+                </div>
+            )}
 
-                {/* Optional Link */}
-                {link && (
-                    <a
-                        href={link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-sm font-medium underline hover:opacity-80 w-fit"
-                        style={{ color: theme.colors.primary }}
-                    >
-                        View more →
-                    </a>
-                )}
-            </div>
+            {/* FOOTER */}
+            {link && (
+                <a
+                    href={link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-4 text-sm font-medium underline hover:opacity-80 w-fit"
+                    style={{ color: theme.colors.primary }}
+                >
+                    View more →
+                </a>
+            )}
+
         </div>
     );
 };
