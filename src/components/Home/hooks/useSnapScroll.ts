@@ -88,7 +88,7 @@ export const useSnapScroll = ({
 
             const touch = e.touches[0];
             const currentY = touch.clientY;
-            const dragDistance = touchState.current.startY - currentY;
+            const dragDistance = currentY - touchState.current.startY;
 
             // Update current position for real-time feedback
             dragOffsetRef.current = dragDistance;
