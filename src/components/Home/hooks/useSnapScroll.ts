@@ -100,7 +100,7 @@ export const useSnapScroll = ({
     );
 
     const handleTouchEnd = useCallback(
-        (e: TouchEvent) => {
+        () => {
             if (!touchState.current.isDragging) return;
 
             const endTime = Date.now();

@@ -1,6 +1,6 @@
 // src/components/Home/components/ScrollContainer.tsx
 import { type ScrollContainerProps } from '../constants';
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 
 
 // export const ScrollContainer_save: React.FC<ScrollContainerProps> = ({
