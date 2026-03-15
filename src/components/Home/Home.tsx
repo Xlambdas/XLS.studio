@@ -282,7 +282,7 @@ export const Home: React.FC = () => {
             window.addEventListener('wheel', handleWheel, { passive: true });
         } else {
             window.addEventListener('touchstart', handleTouchStart, { passive: true });
-            window.addEventListener('touchmove', handleTouchMove, { passive: true });
+            window.addEventListener('touchmove', handleTouchMove, { passive: false });
             window.addEventListener('touchend', handleTouchEnd, { passive: true });
         }
 
