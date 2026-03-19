@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Header } from '../Header';
-import { ChevronUp, ChevronDown } from "lucide-react";
 
 // Imports
 import {
@@ -18,7 +17,7 @@ import {
     getCanvasStyle,
     updateSplineSection,
 } from './utils';
-import { LoadingIndicator } from '../common';
+import { LoadingIndicator, UpArrowButton, DownArrowButton } from '../common';
 import { KEYFRAMES } from '../../styles/utils.ts';
 import { HOME_CONFIG } from '../../constants/home.config.ts';
 
@@ -231,9 +230,11 @@ export const Home_save_: React.FC = () => {
     );
 };
 
-export const Home: React.FC = () => {
-    // const containerRef = useRef<HTMLDivElement>(null);
+export const Home__: React.FC = () => {
+    // --------------
+    // Refs and State
     const canvasRef = useRef<HTMLCanvasElement>(null);
+
     const [animationsEnabled, setAnimationsEnabled] = useState(true);
     const [isLoading, setIsLoading] = useState(true);
     const [section, setSection] = useState(0);
@@ -245,7 +246,8 @@ export const Home: React.FC = () => {
         typeof window !== 'undefined' &&
         ('ontouchstart' in window || navigator.maxTouchPoints > 0);
 
-    // Hooks
+    // --------------
+    // External Hooks
     const { appRef, dprRef, initSpline } = useSplineSetup(
         canvasRef,
         animationsEnabled,
@@ -253,10 +255,7 @@ export const Home: React.FC = () => {
         () => setIsLoading(false)
     );
 
-    const {
-        handleSectionChange,
-        handleCanvasClick,
-    } = useScrollNavigation({
+    const { handleSectionChange, handleCanvasClick } = useScrollNavigation({
         maxSection: HOME_CONFIG.maxSection,
         onSectionChange: setSection,
         onSplineUpdate: (section) => updateSplineSection(appRef.current, section),
@@ -266,25 +265,28 @@ export const Home: React.FC = () => {
         onSwipe: handleSectionChange,
     });
 
+    const { monitorPerformance } = usePerformanceMonitor();
+
+    // -------------
+    // Derived State
     const canGoUp = section > 0;
     const canGoDown = section < HOME_CONFIG.maxSection;
 
     const goUp = () => handleSectionChange(-1);
     const goDown = () => handleSectionChange(1);
 
-    const { monitorPerformance } = usePerformanceMonitor();
-
+    // ----------------------------------------
+    // Refs (sync state inside event listeners)
     const animationsEnabledRef = useRef(animationsEnabled);
     const isTouchDeviceRef = useRef(isTouchDevice);
 
-    // sync refs
     useEffect(() => {
         animationsEnabledRef.current = animationsEnabled;
         isTouchDeviceRef.current = isTouchDevice;
     }, [animationsEnabled, isTouchDevice]);
 
-
-    // wheel effects
+    // ------------------
+    // Event handler refs
     const handleWheelRef = useRef<(e: WheelEvent) => void | null>(null);
     const handleTouchStartRef = useRef<(e: TouchEvent) => void | null>(null);
     const handleTouchEndRef = useRef<(e: TouchEvent) => void | null>(null);
@@ -294,6 +296,7 @@ export const Home: React.FC = () => {
         handleWheelRef.current = (e: WheelEvent) => {
             if (!animationsEnabledRef.current || isTouchDeviceRef.current) return;
             e.preventDefault();
+
             if (Math.abs(e.deltaY) < HOME_CONFIG.deltaThreshold) return;
             handleSectionChange(e.deltaY > 0 ? 1 : -1);
         };
@@ -305,8 +308,8 @@ export const Home: React.FC = () => {
         handleTouchEndRef.current = handleTouchEnd;
     }, [handleTouchStart, handleTouchEnd, handleSectionChange]);
 
-
-    // Main effects
+    // ------------------------
+    // Main effects (listeners)
     useEffect(() => {
         initSpline();
         monitorPerformance();
@@ -327,7 +330,11 @@ export const Home: React.FC = () => {
         };
 
         const handleResize = () =>
-            updateCanvasResolution(canvasRef, dprRef.current, animationsEnabledRef.current);
+            updateCanvasResolution(
+                canvasRef,
+                dprRef.current,
+                animationsEnabledRef.current
+            );
 
         if (!isTouchDeviceRef.current) {
             window.addEventListener('wheel', wheelListener, { passive: false });
@@ -354,11 +361,32 @@ export const Home: React.FC = () => {
         };
     }, []);
 
-    // Sync reduced motion preference
+    // -------------------
+    // reduced motion sync
     useEffect(() => {
         if (theme.reducedMotion) setAnimationsEnabled(false);
     }, [theme.reducedMotion]);
 
+    // --------------
+    // Render helpers
+    const renderIndicators = () =>
+        [0, 1, 2].map((i) => (
+            <div
+                key={i}
+                className="w-2 h-2 rounded-full transition-all duration-300"
+                style={{
+                    backgroundColor:
+                        section === i
+                            ? theme.colors.primary
+                            : theme.colors.primary + "33",
+                    transform: section === i ? "scale(1.3)" : "scale(1)",
+                }}
+            />
+        ));
+
+    // =======
+    // JSX
+    // =======
     return (
         <div
             className="relative overflow-hidden h-screen"
@@ -401,19 +429,7 @@ export const Home: React.FC = () => {
 
             {/* SECTION INDICATOR */}
             <div className="absolute left-4 top-1/2 -translate-y-1/2 z-40 flex flex-col items-center gap-3">
-                {[0, 1, 2].map((i) => (
-                    <div
-                        key={i}
-                        className="w-3 h-3 rounded-full transition-all duration-300"
-                        style={{
-                            backgroundColor:
-                                section === i
-                                    ? theme.colors.primary
-                                    : theme.colors.primary + "33",
-                            transform: section === i ? "scale(1.3)" : "scale(1)",
-                        }}
-                    />
-                ))}
+                {renderIndicators()}
             </div>
 
             {/* Content */}
@@ -446,25 +462,248 @@ export const Home: React.FC = () => {
 };
 
 
-// Extracted arrow components (prevents recreation)
-const UpArrowButton = React.memo(({ onClick, color }: { onClick: () => void; color: string }) => (
-    <button
-        onClick={onClick}
-        aria-label="Previous section"
-        className="absolute top-16 left-1/2 -translate-x-1/2 z-40 text-3xl transition hover:opacity-70 hover:scale-90"
-        style={{ color }}
-    >
-        <ChevronUp size={32} />
-    </button>
-));
+export const Home: React.FC = () => {
+    // --------------
+    // Refs and State
+    const canvasRef = useRef<HTMLCanvasElement>(null);
 
-const DownArrowButton = React.memo(({ onClick, color }: { onClick: () => void; color: string }) => (
-    <button
-        onClick={onClick}
-        aria-label="Next section"
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 z-40 text-3xl transition hover:opacity-70 hover:scale-90"
-        style={{ color }}
-    >
-        <ChevronDown size={32} />
-    </button>
-));
+    const [animationsEnabled, setAnimationsEnabled] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
+    const [section, setSection] = useState(0);
+
+    const { theme } = useTheme();
+    const colors = theme.colors;
+
+    const isTouchDevice =
+        typeof window !== 'undefined' &&
+        ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+
+    // --------------
+    // External Hooks
+    const { appRef, dprRef, initSpline } = useSplineSetup(
+        canvasRef,
+        animationsEnabled,
+        isTouchDevice,
+        () => setIsLoading(false)
+    );
+
+    const { handleSectionChange, handleCanvasClick } = useScrollNavigation({
+        maxSection: HOME_CONFIG.maxSection,
+        onSectionChange: setSection,
+        onSplineUpdate: (section) => updateSplineSection(appRef.current, section),
+    });
+
+    const { handleTouchStart, handleTouchEnd } = useTouchNavigation({
+        onSwipe: handleSectionChange,
+    });
+
+    const { monitorPerformance } = usePerformanceMonitor();
+
+    // -------------
+    // Derived State
+    const canGoUp = section > 0;
+    const canGoDown = section < HOME_CONFIG.maxSection;
+
+    const goUp = () => handleSectionChange(-1);
+    const goDown = () => handleSectionChange(1);
+
+    // -----------------
+    // Global navigation
+    useGlobalNavigation({
+        isTouchDevice,
+        animationsEnabled,
+        canvasRef,
+        dprRef,
+        onSectionChange: handleSectionChange,
+        onTouchStart: handleTouchStart,
+        onTouchEnd: handleTouchEnd,
+    });
+
+    // ------------------
+    // Event handler refs
+    useEffect(() => {
+        initSpline();
+        monitorPerformance();
+        return () => {
+            appRef.current = null;
+        };
+    }, []);
+
+    // -------------------
+    // reduced motion sync
+    useEffect(() => {
+        if (theme.reducedMotion) setAnimationsEnabled(false);
+    }, [theme.reducedMotion]);
+
+    // --------------
+    // Render helpers
+    const renderIndicators = () =>
+        [0, 1, 2].map((i) => (
+            <div
+                key={i}
+                className="w-2 h-2 rounded-full transition-all duration-300"
+                style={{
+                    backgroundColor:
+                        section === i
+                            ? theme.colors.primary
+                            : theme.colors.primary + "33",
+                    transform: section === i ? "scale(1.3)" : "scale(1)",
+                }}
+            />
+        ));
+
+    // =======
+    // JSX
+    // =======
+    return (
+        <div
+            className="relative overflow-hidden h-screen"
+            style={{ backgroundColor: colors.background }}
+        >
+            {/* Canvas Layer */}
+            <div
+                className="fixed inset-0 z-0 touch-none h-screen"
+                style={{
+                    display: animationsEnabled ? 'block' : 'none',
+                    pointerEvents: isTouchDevice ? 'none' : 'auto',
+                }}>
+                <canvas
+                    ref={canvasRef}
+                    onClick={handleCanvasClick}
+                    style={getCanvasStyle(isTouchDevice)}
+                />
+            </div>
+
+            {/* Loading Indicator */}
+            {isLoading && <LoadingIndicator />}
+
+            {/* Styles */}
+            <style>{KEYFRAMES}</style>
+
+            {/* Header */}
+            <Header
+                type="main"
+                animationsEnabled={animationsEnabled}
+                setAnimationsEnabled={setAnimationsEnabled}
+            />
+
+            {/* UP ARROW */}
+            {canGoUp && (
+                <UpArrowButton
+                    onClick={goUp}
+                    color={theme.colors.primary}
+                />
+            )}
+
+            {/* SECTION INDICATOR */}
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 z-40 flex flex-col items-center gap-3">
+                {renderIndicators()}
+            </div>
+
+            {/* Content */}
+            <ScrollContainer section={section} animationsEnabled={animationsEnabled}>
+                {/* Section 1: Welcome */}
+                <Section ariaLabel="Welcome" active={section === 0}>
+                    <WelcomeSection theme={theme} />
+                </Section>
+
+                {/* Section 2: About */}
+                <Section ariaLabel="About" active={section === 1}>
+                    <AboutSection theme={theme} />
+                </Section>
+
+                {/* Section 3: Sandbox */}
+                <Section ariaLabel="The Sandbox" active={section === 2}>
+                    <SandboxSection theme={theme} />
+                </Section>
+            </ScrollContainer>
+
+            {/* DOWN ARROW */}
+            {canGoDown && (
+                <DownArrowButton
+                    onClick={goDown}
+                    color={theme.colors.primary}
+                />
+            )}
+        </div>
+    );
+};
+
+
+
+
+type UseGlobalNavigationProps = {
+    isTouchDevice: boolean;
+    animationsEnabled: boolean;
+    canvasRef: React.RefObject<HTMLCanvasElement | null>;
+    dprRef: React.RefObject<number>;
+    onSectionChange: (dir: number) => void;
+    onTouchStart: (e: TouchEvent) => void;
+    onTouchEnd: (e: TouchEvent) => void;
+};
+
+
+export const useGlobalNavigation = ({
+    isTouchDevice,
+    animationsEnabled,
+    canvasRef,
+    dprRef,
+    onSectionChange,
+    onTouchStart,
+    onTouchEnd,
+}: UseGlobalNavigationProps) => {
+    // ----------------------------------------
+    // Refs (sync state inside event listeners)
+    const animationsEnabledRef = useRef(animationsEnabled);
+    const isTouchDeviceRef = useRef(isTouchDevice);
+
+    useEffect(() => {
+        animationsEnabledRef.current = animationsEnabled;
+        isTouchDeviceRef.current = isTouchDevice;
+    }, [animationsEnabled, isTouchDevice]);
+
+    const handleWheel = (e: WheelEvent) => {
+        if (!animationsEnabledRef.current || isTouchDeviceRef.current) return;
+
+        e.preventDefault();
+
+        if (Math.abs(e.deltaY) < HOME_CONFIG.deltaThreshold) return;
+
+        onSectionChange(e.deltaY > 0 ? 1 : -1);
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+        e.preventDefault();
+    };
+
+    useEffect(() => {
+        const handleResize = () =>
+            updateCanvasResolution(
+                canvasRef,
+                dprRef.current,
+                animationsEnabledRef.current
+            );
+
+        if (!isTouchDeviceRef.current) {
+            window.addEventListener("wheel", handleWheel, { passive: false });
+        } else {
+            window.addEventListener("touchstart", onTouchStart, { passive: false });
+            window.addEventListener("touchend", onTouchEnd, { passive: false });
+            window.addEventListener("touchmove", handleTouchMove, { passive: false });
+        }
+
+        window.addEventListener("resize", handleResize);
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+
+            if (!isTouchDeviceRef.current) {
+                window.removeEventListener("wheel", handleWheel);
+            } else {
+                window.removeEventListener("touchstart", onTouchStart);
+                window.removeEventListener("touchend", onTouchEnd);
+                window.removeEventListener("touchmove", handleTouchMove);
+            }
+        };
+    }, []);
+};
