@@ -155,11 +155,11 @@ export const AccessibilityPage_save: React.FC = () => {
         { id: 'motion', label: t.motion, icon: TAB_CONFIG.motion, panel: 'motion-panel' },
     ];
 
-    const { updateColor, updateFontScale, updateButtonScale, updateMotion, updateLanguage } = useTheme();
+    const { updateFontScale, updateButtonScale, updateMotion, updateLanguage } = useTheme(); // updateColor,
 
-    const handleColorChange = (colorKey: 'primary' | 'secondary' | 'background', value: string) => {
-        updateColor(colorKey, value);
-    };
+    // const handleColorChange = (colorKey: 'primary' | 'secondary' | 'background', value: string) => {
+    //     updateColor(colorKey, value);
+    // };
 
     const handleFontChange = (fontFamily: string, type: 'primary' | 'secondary') => {
         const fontUpdate = fontFamily === 'Arial'
