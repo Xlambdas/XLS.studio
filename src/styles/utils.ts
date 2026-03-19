@@ -21,11 +21,11 @@ export function getColors(theme: AppTheme) {
         return {
             primary: '#FFFFFF',
             secondary: '#000000',
-            background: '#FFFFFF',
-            darkButton: '#000000',
+            background: '#000000',
+            darkButton: '#FFFFFF',
             primaryTransparent: 'rgba(255,255,255,0.15)',
             primaryGlow: 'rgba(255,255,255,0.35)',
-            darkButtonTransparent: 'rgba(0,0,0,0.85)',
+            darkButtonTransparent: 'rgba(255,255,255,0.2)',
         };
     }
     return { ...theme.colors };

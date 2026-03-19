@@ -18,7 +18,18 @@ export interface ThemeTypography {
     secondaryFontFamily: 'JetBrains Mono' | 'Inter' | 'Arial';
 }
 
+
 export interface AppTheme {
+    colors: ThemeColors;
+    typography: ThemeTypography;
+    buttonScale: number;
+    reducedMotion: boolean;
+    highContrast: boolean;
+    language: 'en' | 'es' | 'fr' | 'de';
+}
+
+
+export interface AppTheme_old {
     colors: ThemeColors;
     typography: ThemeTypography;
     /** Button size multiplier. 0.85 | 1 | 1.3 */

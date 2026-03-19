@@ -1,3 +1,23 @@
+/* src/styles/globals.css */
+:root {
+    /* Colors */
+    --color-primary: #9C88D9;
+    --color-secondary: #18112D;
+    --color-background: #0B0E16;
+    --color-dark-button: #0B0E16;
+    --color-primary-transparent: rgba(156, 136, 217, 0.2);
+    --color-primary-glow: rgba(156, 136, 217, 0.4);
+    --color-dark-button-transparent: rgba(24, 17, 45, 0.8);
+
+    /* Typography */
+    --font-primary: 'Montserrat', sans-serif;
+    --font-secondary: 'JetBrains Mono', monospace;
+
+    /* Scales */
+    --font-scale: 1;
+    --button-scale: 1;
+}
+
 @import "tailwindcss";
 
 *,

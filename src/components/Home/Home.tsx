@@ -35,7 +35,7 @@ export const Home: React.FC = () => {
     const [section, setSection] = useState(0);
 
     const { theme } = useTheme();
-    const colors = theme.colors;
+    // const colors = theme.colors;
 
     const isTouchDevice =
         typeof window !== 'undefined' &&
@@ -184,8 +184,8 @@ export const Home: React.FC = () => {
     // =======
     return (
         <div
-            className="relative overflow-hidden h-screen"
-            style={{ backgroundColor: colors.background }}
+            className="relative overflow-hidden h-screen background:opacity-00"
+            // style={{ backgroundColor: colors.background }}
         >
             {/* Canvas Layer */}
             <div
