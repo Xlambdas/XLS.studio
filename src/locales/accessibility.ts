@@ -1,5 +1,5 @@
 // src/locales/accessibility.ts
-export type Language = 'en' | 'es' | 'fr' | 'de';
+import { type Language } from '../theme';
 
 export interface AccessibilityTranslation {
     title: string;

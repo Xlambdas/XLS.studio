@@ -2,23 +2,25 @@
 import React from "react";
 import { type LoadingIndicatorProps } from "../types";
 import { useTheme } from "../../../context/themeContext";
-import "./loading-indicator.css";
+import { COMPONENT_TRANSLATIONS } from "../../../locales";
 
 export const LoadingIndicator: React.FC<LoadingIndicatorProps> = ({
-    message = "Loading…",
+    message,
 }) => {
     const { theme } = useTheme();
+    const t = COMPONENT_TRANSLATIONS[theme.language];
+    const displayMessage = message ?? t.loadingMessage;
 
     return (
         <div
             role="status"
             aria-live="polite"
-            aria-label={message}
+            aria-label={displayMessage}
             className="fixed inset-0 z-9999 flex flex-col items-center justify-center gap-4"
             style={{
-                background: theme.colors.background,
-                fontFamily: theme.typography.secondaryFontFamily,
-                fontSize: `${theme.typography.fontScale}rem`,
+                background: 'var(--color-background)',
+                fontFamily: 'var(--font-secondary)',
+                fontSize: 'calc(1rem * var(--font-scale))',
             }}
             data-reduced-motion={theme.reducedMotion}
         >
@@ -26,12 +28,12 @@ export const LoadingIndicator: React.FC<LoadingIndicatorProps> = ({
                 aria-hidden="true"
                 className="loading-spinner"
                 style={{
-                    borderColor: theme.colors.primaryTransparent,
-                    borderTopColor: theme.colors.primary,
+                    borderColor: 'var(--color-primary-transparent)',
+                    borderTopColor: 'var(--color-primary)',
                 }}
             />
-            <span style={{ color: theme.colors.primary }}>
-                {message}
+            <span style={{ color: 'var(--color-primary)', fontFamily: 'var(--font-secondary)', fontSize: 'calc(1rem * var(--font-scale))' }}>
+                {displayMessage}
             </span>
         </div>
     );

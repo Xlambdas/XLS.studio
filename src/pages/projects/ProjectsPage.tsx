@@ -5,11 +5,13 @@ import React, { useEffect, useState } from 'react';
 import { projects } from './data/projectsData';
 import { Header, Carousel } from '../../components';
 import { ProjectCard } from './components/ProjectCard';
+import { PROJECTS_TRANSLATIONS } from '../../locales';
 
 
 export const ProjectsPage: React.FC = () => {
     const navigate = useNavigate();
     const { theme } = useTheme();
+    const t = PROJECTS_TRANSLATIONS[theme.language];
     const [animationsEnabled, setAnimationsEnabled] = useState(true);
 
     useEffect(() => {
@@ -17,15 +19,24 @@ export const ProjectsPage: React.FC = () => {
     }, [theme.reducedMotion]);
 
     return (
-        <div className="h-screen w-full" style={{ backgroundColor: theme.colors.background }}>
+        <div
+            className="h-screen w-full"
+            style={{ backgroundColor: 'var(--color-background)' }}
+            // role="main"
+            aria-label={t.ariaLabel}
+        >
             <Header type="main" animationsEnabled={animationsEnabled} setAnimationsEnabled={setAnimationsEnabled} />
 
             <button
                 onClick={() => navigate("/")}
-                className="fixed left-4 sm:left-6 lg:left-8 top-17 sm:top-17 z-50 text-lg sm:text-xl font-light italic transition-opacity hover:opacity-70"
-                style={{ color: theme.colors.primary }}
+                className="fixed left-4 sm:left-6 lg:left-8 top-17 sm:top-17 z-50 text-lg sm:text-xl font-light italic transition-opacity hover:opacity-70 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-transparent rounded"
+                style={{
+                    color: 'var(--color-primary)',
+                    // focusRingColor: 'var(--color-primary)'
+                }}
+                aria-label={t.backAriaLabel}
             >
-                ← Back
+                {t.backButton}
             </button>
 
             <div className="flex flex-col h-screen mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
@@ -33,16 +44,22 @@ export const ProjectsPage: React.FC = () => {
                 <h1
                     className="text-4xl sm:text-5xl lg:text-6xl font-light italic text-center mb-8"
                     style={{
-                        color: theme.colors.primary,
-                        fontFamily: theme.typography.primaryFontFamily,
+                        color: 'var(--color-primary)',
+                        fontFamily: 'var(--font-primary)',
                         letterSpacing: "-0.02em",
                     }}
                 >
-                    My Projects
+                    {t.title}
                 </h1>
 
                 {/* Carousel */}
-                <div className="flex-1 min-h-0" >
+                <div
+                    className="flex-1 min-h-0"
+                    role="region"
+                    aria-label={t.carouselAriaLabel}
+                    aria-live="polite"
+                    aria-atomic="false"
+                >
                     <Carousel>
                         {projects.map((p) => (
                             <ProjectCard key={p.id} project={p} />

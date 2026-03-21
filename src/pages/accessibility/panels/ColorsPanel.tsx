@@ -62,8 +62,8 @@ const COLOR_PRESETS: ColorPreset[] = [
     {
         name: 'Light Mode',
         colors: {
-            primary: '#6C5CE7',
-            secondary: '#2D3436',
+            primary: '#2D3436',
+            secondary: '#6C5CE7',
             background: '#F5F6FA',
         },
     },

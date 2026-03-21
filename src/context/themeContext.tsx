@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import { type AppTheme } from '../theme/theme.types';
 import { DEFAULT_THEME } from '../theme/theme.defaults.ts';
-import { getColors } from '../styles/utils.ts';
+import { computeSplineColors, getColors } from '../styles';
 
 // =========
 // Context shape
@@ -64,6 +64,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     useEffect(() => {
         const root = document.documentElement;
         const colors = getColors(theme); // Apply high-contrast logic
+        // const splineColors = computeSplineColors(colors);
 
         root.style.setProperty('--color-primary', colors.primary);
         root.style.setProperty('--color-primary-glow', colors.primaryGlow);
@@ -72,6 +73,9 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         root.style.setProperty('--color-dark-button', colors.darkButton);
         root.style.setProperty('--color-primary-transparent', colors.primaryTransparent);
         root.style.setProperty('--color-dark-button-transparent', colors.darkButtonTransparent);
+        root.style.setProperty('--spline-color', theme.colors.splineColor);
+        root.style.setProperty('--spline-fresnel', theme.colors.splineFresnel);
+        root.style.setProperty('--spline-lighting', theme.colors.splineLighting);
         root.style.setProperty('--font-primary', theme.typography.primaryFontFamily);
         root.style.setProperty('--font-secondary', theme.typography.secondaryFontFamily);
         root.style.setProperty('--font-scale', String(theme.typography.fontScale));
@@ -103,7 +107,20 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     const updateColor = useCallback(
         (key: 'primary' | 'secondary' | 'background' | 'primaryGlow', value: string) => {
-            setTheme(prev => ({ ...prev, colors: { ...prev.colors, [key]: value } }));
+            setTheme(prev => {
+                const updatedColors = { ...prev.colors, [key]: value };
+                const splineColors = computeSplineColors(updatedColors);
+
+                console.log('updateColor called:', {
+                    key,
+                    value,
+                    splineColors,
+                    oldSplineColor: prev.colors.splineColor,
+                    newSplineColor: splineColors.splineColor,
+                });
+
+                return { ...prev, colors: { ...updatedColors, ...splineColors } };
+            });
         },
         []
     );

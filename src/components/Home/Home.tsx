@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Header } from '../Header';
+import { updateSplineColors } from './utils/splineColors';
+import { HOME_TRANSLATIONS } from '../../locales/home.ts';
 
 // Imports
 import {
@@ -23,6 +25,7 @@ import { HOME_CONFIG } from '../../constants/home.config.ts';
 
 import { useTheme } from "../../context/themeContext";
 import { WelcomeSection, AboutSection, SandboxSection } from "./sections";
+// import { updateSplineColors } from './utils/splineColors.ts';
 
 // last correct version - but still probleme with scrolling on mobile; 19/03 16:00
 export const Home: React.FC = () => {
@@ -35,6 +38,7 @@ export const Home: React.FC = () => {
     const [section, setSection] = useState(0);
 
     const { theme } = useTheme();
+    const t = HOME_TRANSLATIONS[theme.language];
     // const colors = theme.colors;
 
     const isTouchDevice =
@@ -141,6 +145,19 @@ export const Home: React.FC = () => {
 
         window.addEventListener('resize', handleResize);
 
+        // return () => {
+        //     window.removeEventListener('resize', handleResize);
+
+        //     if (!isTouchDeviceRef.current) {
+        //         window.removeEventListener('wheel', wheelListener);
+        //     } else {
+        //         window.removeEventListener('touchstart', touchStartListener);
+        //         window.removeEventListener('touchend', touchEndListener);
+        //         window.removeEventListener('touchmove', touchMoveListener);
+        //     }
+
+        //     appRef.current = null;
+        // };
         return () => {
             window.removeEventListener('resize', handleResize);
 
@@ -152,7 +169,15 @@ export const Home: React.FC = () => {
                 window.removeEventListener('touchmove', touchMoveListener);
             }
 
-            appRef.current = null;
+            // Properly pause and dispose Spline
+            if (appRef.current) {
+                appRef.current._isPaused = true;
+                if (appRef.current.dispose) {
+                    appRef.current.dispose();
+                }
+                appRef.current = null;
+                (window as any).__app = null;
+            }
         };
     }, []);
 
@@ -161,6 +186,40 @@ export const Home: React.FC = () => {
     useEffect(() => {
         if (theme.reducedMotion) setAnimationsEnabled(false);
     }, [theme.reducedMotion]);
+
+    // Sync theme colors to Spline
+    // useEffect(() => {
+    //     updateSplineColors(appRef.current, {
+    //         color: theme.colors.splineColor,      // Dark main color
+    //         fresnel: theme.colors.splineFresnel,      // Primary accent border
+    //         lighting: theme.colors.splineLighting,     // Primary accent highlight
+    //     });
+    // }, [theme.colors.splineColor, theme.colors.splineFresnel, theme.colors.splineLighting, appRef]);
+
+    // Sync theme colors to Spline
+    useEffect(() => {
+        if (!appRef.current) return;
+
+        console.log('Updating spline with:', {
+            color: theme.colors.splineColor,
+            fresnel: theme.colors.splineFresnel,
+            lighting: theme.colors.splineLighting,
+        });
+
+        updateSplineColors(appRef.current, {
+            color: theme.colors.splineColor,
+            fresnel: theme.colors.splineFresnel,
+            lighting: theme.colors.splineLighting,
+        });
+    }, [theme.colors.splineColor, theme.colors.splineFresnel, theme.colors.splineLighting]);
+    // Pause Spline on component unmount
+    useEffect(() => {
+        return () => {
+            if (appRef.current) {
+                appRef.current._isPaused = true;
+            }
+        };
+    }, []);
 
     // --------------
     // Render helpers
@@ -172,20 +231,43 @@ export const Home: React.FC = () => {
                 style={{
                     backgroundColor:
                         section === i
-                            ? theme.colors.primary
-                            : theme.colors.primary + "33",
+                            ? 'var(--color-primary)'
+                            : 'var(--color-primary-transparent)',
                     transform: section === i ? "scale(1.3)" : "scale(1)",
                 }}
             />
         ));
+
+    // Handle page visibility
+    useEffect(() => {
+        const handleVisibilityChange = () => {
+            if (!appRef.current) return;
+            appRef.current._isPaused = document.hidden;
+        };
+
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+    }, []);
+
+    // Pause Spline when navigating away
+    useEffect(() => {
+        const handleBeforeUnload = () => {
+            if (appRef.current) {
+                appRef.current._isPaused = true;
+            }
+        };
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+    }, []);
 
     // =======
     // JSX
     // =======
     return (
         <div
-            className="relative overflow-hidden h-screen background:opacity-00"
-            // style={{ backgroundColor: colors.background }}
+            className="relative overflow-hidden h-screen"
+            style={{ backgroundColor: 'var(--color-background)' }}
         >
             {/* Canvas Layer */}
             <div
@@ -193,6 +275,7 @@ export const Home: React.FC = () => {
                 style={{
                     display: animationsEnabled ? 'block' : 'none',
                     pointerEvents: isTouchDevice ? 'none' : 'auto',
+                    backgroundColor: 'var(--color-background)',
                 }}>
                 <canvas
                     ref={canvasRef}
@@ -218,7 +301,6 @@ export const Home: React.FC = () => {
             {canGoUp && (
                 <UpArrowButton
                     onClick={goUp}
-                    color={theme.colors.primary}
                 />
             )}
 
@@ -230,18 +312,16 @@ export const Home: React.FC = () => {
             {/* Content */}
             <ScrollContainer section={section} animationsEnabled={animationsEnabled}>
                 {/* Section 1: Welcome */}
-                <Section ariaLabel="Welcome" active={section === 0}>
-                    <WelcomeSection theme={theme} />
+                <Section ariaLabel={t.welcomeAriaLabel} active={section === 0}>
+                    <WelcomeSection theme={theme} t={t} />
                 </Section>
 
-                {/* Section 2: About */}
-                <Section ariaLabel="About" active={section === 1}>
-                    <AboutSection theme={theme} />
+                <Section ariaLabel={t.aboutAriaLabel} active={section === 1}>
+                    <AboutSection theme={theme} t={t} />
                 </Section>
 
-                {/* Section 3: Sandbox */}
-                <Section ariaLabel="The Sandbox" active={section === 2}>
-                    <SandboxSection theme={theme} />
+                <Section ariaLabel={t.sandboxAriaLabel} active={section === 2}>
+                    <SandboxSection theme={theme} t={t} />
                 </Section>
             </ScrollContainer>
 
@@ -249,7 +329,6 @@ export const Home: React.FC = () => {
             {canGoDown && (
                 <DownArrowButton
                     onClick={goDown}
-                    color={theme.colors.primary}
                 />
             )}
         </div>

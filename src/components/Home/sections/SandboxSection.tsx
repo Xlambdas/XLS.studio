@@ -2,9 +2,13 @@
 import React from "react";
 import { type AppTheme } from "../../../theme";
 import { PrimaryButton } from "../../common";
+import { HOME_TRANSLATIONS } from "../../../locales";
+// import { useTheme } from "../../../context/themeContext";
 
 
-export const SandboxSection: React.FC<{ theme: AppTheme }> = ({ theme }) => {
+export const SandboxSection: React.FC<{ theme: AppTheme, t: typeof HOME_TRANSLATIONS['en'] }> = ({ t }) => {
+    // const { theme: themeContext } = useTheme();
+    // const t = HOME_TRANSLATIONS[theme.language];
 
     return (
         <div
@@ -19,16 +23,16 @@ export const SandboxSection: React.FC<{ theme: AppTheme }> = ({ theme }) => {
 
             <h2
                 style={{
-                    fontFamily: theme.typography.primaryFontFamily,
-                    fontSize: `clamp(${Math.round(42 * theme.typography.fontScale)}px,8vw,${Math.round(96 * theme.typography.fontScale)}px)`,
+                    fontFamily: 'var(--font-primary)',
+                    fontSize: `clamp(calc(42px * var(--font-scale)), 8vw, calc(96px * var(--font-scale)))`,
                     fontStyle: "italic",
                     fontWeight: 500,
                     lineHeight: "1",
-                    color: theme.colors.primary,
+                    color: 'var(--color-primary)',
                     width: 'auto'
                 }}
             >
-                THE SANDBOX
+                {t.sandboxTitle}
             </h2>
 
             <div
@@ -40,23 +44,22 @@ export const SandboxSection: React.FC<{ theme: AppTheme }> = ({ theme }) => {
 
                 <p
                     style={{
-                        fontFamily: theme.typography.secondaryFontFamily,
-                        fontSize: `clamp(${Math.round(16 * theme.typography.fontScale)}px,2.5vw,${Math.round(32 * theme.typography.fontScale)}px)`,
+                        fontFamily: 'var(--font-secondary)',
+                        fontSize: `clamp(calc(16px * var(--font-scale)), 2.5vw, calc(32px * var(--font-scale)))`,
                         fontStyle: "italic",
                         fontWeight: 500,
                         lineHeight: "1.4",
-                        color: theme.colors.primary,
+                        color: 'var(--color-primary)',
                         maxWidth: 'clamp(260px, 60vw, 520px)',
                         textAlign: 'center'
                     }}
                 >
-                    A controlled environment for experimentation,
-                    iteration, and structured exploration.
+                    {t.sandboxDescription}
                 </p>
 
                 <div className="pointer-events-auto">
                     <PrimaryButton variant="cta" disabled={true}>
-                        Discover more
+                        {t.discoverMore}
                     </PrimaryButton>
                 </div>
 

@@ -3,8 +3,9 @@ import React from "react";
 import { PrimaryButton } from "../../common";
 import { type AppTheme } from "../../../theme";
 import { useNavigate } from "react-router-dom";
+import { HOME_TRANSLATIONS } from "../../../locales";
 
-export const AboutSection: React.FC<{ theme: AppTheme }> = ({ theme }) => {
+export const AboutSection: React.FC<{ theme: AppTheme, t: typeof HOME_TRANSLATIONS['en'] }> = ({ t }) => {
     const navigate = useNavigate();
 
     return (
@@ -19,15 +20,15 @@ export const AboutSection: React.FC<{ theme: AppTheme }> = ({ theme }) => {
 
             <h2
                 style={{
-                    fontSize: `clamp(${Math.round(10 * theme.typography.fontScale)}px,6vw,${Math.round(60 * theme.typography.fontScale)}px)`,
-                    fontFamily: theme.typography.primaryFontFamily,
+                    fontSize: `clamp(calc(10px * var(--font-scale)), 6vw, calc(60px * var(--font-scale)))`,
+                    fontFamily: 'var(--font-primary)',
                     fontStyle: "italic",
                     fontWeight: 500,
-                    color: theme.colors.primary,
+                    color: 'var(--color-primary)',
                     width: '75vw'
                 }}
             >
-                FROM KNOWLEDGE TO SYSTEMS
+                {t.aboutTitle}
             </h2>
 
             <div
@@ -43,16 +44,15 @@ export const AboutSection: React.FC<{ theme: AppTheme }> = ({ theme }) => {
 
                     <p
                         style={{
-                            fontSize: `clamp(${Math.round(18 * theme.typography.fontScale)}px,2vw,${Math.round(36 * theme.typography.fontScale)}px)`,
-                            fontFamily: theme.typography.secondaryFontFamily,
-                            color: theme.colors.primary,
+                            fontSize: `clamp(calc(18px * var(--font-scale)), 2vw, calc(36px * var(--font-scale)))`,
+                            fontFamily: 'var(--font-secondary)',
+                            color: 'var(--color-primary)',
                             width: 'clamp(300px, 50vw, 550px)',
                             textAlign: 'justify',
                             hyphens: 'auto'
                         }}
                     >
-                        I design structured digital environments that transform complex knowledge into interactive tools.
-                        From cognitive science to UI systems, each project is built to explore how humans think, learn and interact.
+                        {t.aboutDescription}
                     </p>
                 </div>
 
@@ -65,11 +65,11 @@ export const AboutSection: React.FC<{ theme: AppTheme }> = ({ theme }) => {
                 >
 
                     <PrimaryButton variant="small" onClick={() => navigate('/projects')}>
-                        My Projects
+                        {t.myProjects}
                     </PrimaryButton>
 
                     <PrimaryButton variant="large" disabled={true}>
-                        My Portfolio
+                        {t.myPortfolio}
                     </PrimaryButton>
                 </div>
             </div>

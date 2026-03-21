@@ -1,9 +1,10 @@
 // src/components/Header/Header.tsx
 import React from "react";
-import { useNavigate  } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { type HeaderProps } from "./types";
 import { useTheme } from "../../context/themeContext";
-import "./header.css";
+import { HEADER_TRANSLATIONS } from "../../locales";
+import { MenuIcon } from "./MenuIcon";
 
 export const Header: React.FC<HeaderProps> = ({
     type = "default",
@@ -12,13 +13,14 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
     const navigate = useNavigate();
     const { theme } = useTheme();
+    const t = HEADER_TRANSLATIONS[theme.language];
 
     return (
         <header
             className="fixed top-0 left-0 right-0 z-10 flex items-center"
             style={{
                 height: 'clamp(60px, 6vh, 70px)',
-                background: theme.colors.secondary
+                background: 'var(--color-secondary)'
             }}
         >
             <div
@@ -39,11 +41,11 @@ export const Header: React.FC<HeaderProps> = ({
                     style={{
                         flex: 1,
                         textDecoration: 'none',
-                        fontFamily: theme.typography.primaryFontFamily,
+                        fontFamily: 'var(--font-primary)',
                         fontSize: 'clamp(1.5rem, 2.5vw, 2.25rem)',
                         fontStyle: 'italic',
                         fontWeight: 300,
-                        color: theme.colors.primary,
+                        color: 'var(--color-primary)',
                         cursor: 'pointer'
                     }}
                 >
@@ -55,13 +57,13 @@ export const Header: React.FC<HeaderProps> = ({
                         onClick={() => setAnimationsEnabled(prev => !prev)}
                         className={`header-toggle transition-opacity hover:opacity-70 hide-below-600 ${animationsEnabled ? "active" : ""}`}
                         style={{
-                            fontFamily: theme.typography.secondaryFontFamily,
-                            color: animationsEnabled ? theme.colors.secondary : theme.colors.primary,
-                            borderColor: theme.colors.primary,
-                            background: animationsEnabled ? theme.colors.primary : 'transparent'
+                            fontFamily: 'var(--font-secondary)',
+                            color: animationsEnabled ? 'var(--color-secondary)' : 'var(--color-primary)',
+                            borderColor: 'var(--color-primary)',
+                            background: animationsEnabled ? 'var(--color-primary)' : 'transparent'
                         }}
                     >
-                        {animationsEnabled ? "Animations ON" : "Animations OFF"}
+                        {animationsEnabled ? t.animationsOn : t.animationsOff}
                     </button>
                 )}
 
@@ -69,20 +71,21 @@ export const Header: React.FC<HeaderProps> = ({
                     onClick={() => navigate("/accessibility")}
                     className="header-button transition-opacity hover:opacity-70"
                     style={{
-                        fontFamily: theme.typography.secondaryFontFamily,
-                        color: theme.colors.primary,
-                        borderColor: theme.colors.primary
+                        fontFamily: 'var(--font-secondary)',
+                        color: 'var(--color-primary)',
+                        borderColor: 'var(--color-primary)'
                     }}
                 >
-                    Accessibility
+                    {t.accessibility}
                 </button>
 
-                <button
+                {/* <button
                     className="header-color-toggle"
                     style={{
-                        background: theme.colors.primary
+                        background: 'var(--color-primary)'
                     }}
-                />
+                /> */}
+                <MenuIcon />
             </div>
         </header>
     );

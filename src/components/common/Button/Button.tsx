@@ -2,8 +2,9 @@
 import React from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { cn } from "../../../lib/utils";
+import { useTheme } from "../../../context/themeContext";
+import { COMPONENT_TRANSLATIONS } from "../../../locales";
 import { type PrimaryButtonProps } from "../types";
-import "./button.css";
 
 export const PrimaryButton: React.FC<PrimaryButtonProps> = ({
     children,
@@ -30,24 +31,34 @@ export const PrimaryButton: React.FC<PrimaryButtonProps> = ({
 };
 
 
-export const UpArrowButton = React.memo(({ onClick, color }: { onClick: () => void; color: string }) => (
-    <button
-        onClick={onClick}
-        aria-label="Previous section"
-        className="absolute top-16 left-1/2 -translate-x-1/2 z-40 p-2 transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg hover:opacity-70 hover:scale-90 active:scale-75"
-        style={{ color }}
-    >
-        <ChevronUp size={32} />
-    </button>
-));
+export const UpArrowButton = React.memo(({ onClick }: { onClick: () => void }) => {
+    const { theme } = useTheme();
+    const t = COMPONENT_TRANSLATIONS[theme.language];
 
-export const DownArrowButton = React.memo(({ onClick, color }: { onClick: () => void; color: string }) => (
-    <button
-        onClick={onClick}
-        aria-label="Next section"
-        className="absolute bottom-6 sm:bottom-14 left-1/2 -translate-x-1/2 z-40 p-2 transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg hover:opacity-70 hover:scale-90 active:scale-75"
-        style={{ color }}
-    >
-        <ChevronDown size={32} />
-    </button>
-));
+    return (
+        <button
+            onClick={onClick}
+            aria-label={t.previousSection}
+            className="absolute top-16 left-1/2 -translate-x-1/2 z-40 p-2 transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg hover:opacity-70 hover:scale-110 active:scale-75"
+            style={{ color: 'var(--color-primary)' }}
+        >
+            <ChevronUp size={32} />
+        </button>
+    );
+});
+
+export const DownArrowButton = React.memo(({ onClick }: { onClick: () => void }) => {
+    const { theme } = useTheme();
+    const t = COMPONENT_TRANSLATIONS[theme.language];
+
+    return (
+        <button
+            onClick={onClick}
+            aria-label={t.nextSection}
+            className="absolute bottom-6 sm:bottom-14 left-1/2 -translate-x-1/2 z-40 p-2 transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg hover:opacity-70 hover:scale-90 active:scale-75"
+            style={{ color: 'var(--color-primary)' }}
+        >
+            <ChevronDown size={32} />
+        </button>
+    );
+});

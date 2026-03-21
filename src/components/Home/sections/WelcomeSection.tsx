@@ -2,8 +2,11 @@
 import React from "react";
 import { PrimaryButton } from "../../common";
 import type { AppTheme } from "../../../theme";
+import { HOME_TRANSLATIONS } from "../../../locales";
 
-export const WelcomeSection: React.FC<{ theme: AppTheme }> = ({ theme }) => {
+export const WelcomeSection: React.FC<{ theme: AppTheme, t: typeof HOME_TRANSLATIONS['en'] }> = ({ t }) => {
+    // const t = HOME_TRANSLATIONS[theme.language];
+
     return (
         <div
             className="flex flex-col justify-center items-end w-full h-screen min-h-full mx-auto pointer-events-none"
@@ -22,29 +25,29 @@ export const WelcomeSection: React.FC<{ theme: AppTheme }> = ({ theme }) => {
                 <div className="flex flex-col items-end w-full">
                     <h1
                         style={{
-                            fontFamily: theme.typography.primaryFontFamily,
-                            fontSize: `clamp(${Math.round(36 * theme.typography.fontScale)}px,8vw,${Math.round(96 * theme.typography.fontScale)}px)`,
+                            fontFamily: 'var(--font-primary)',
+                            fontSize: `clamp(calc(36px * var(--font-scale)), 8vw, calc(96px * var(--font-scale)))`,
                             fontStyle: "italic",
                             fontWeight: 500,
                             lineHeight: "normal",
-                            color: theme.colors.primary,
+                            color: 'var(--color-primary)',
                         }}
                     >
-                        WELCOME
+                        {t.welcomeTitle}
                     </h1>
 
                     <p
                         style={{
-                            fontFamily: theme.typography.secondaryFontFamily,
-                            fontSize: `clamp(${Math.round(16 * theme.typography.fontScale)}px,2.5vw,${Math.round(32 * theme.typography.fontScale)}px)`,
+                            fontFamily: 'var(--font-secondary)',
+                            fontSize: `clamp(calc(16px * var(--font-scale)), 2.5vw, calc(32px * var(--font-scale)))`,
                             fontWeight: 500,
-                            color: theme.colors.primary,
+                            color: 'var(--color-primary)',
                             maxWidth: `clamp(260px, 50vw, 720px)`,
                             minWidth: `clamp(240px, 60vw, 450px)`,
                             textAlign: 'right'
                         }}
                     >
-                        Explore cognitive science, quizzes & projects
+                        {t.welcomeSubtitle}
                     </p>
                 </div>
 
@@ -59,7 +62,7 @@ export const WelcomeSection: React.FC<{ theme: AppTheme }> = ({ theme }) => {
 
                     <div className="pointer-events-auto">
                         <PrimaryButton variant="cta" disabled={true}>
-                            Enter the system
+                            {t.enterSystem}
                         </PrimaryButton>
                     </div>
 

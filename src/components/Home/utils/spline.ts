@@ -7,7 +7,7 @@ export const initializeSpline = async (
 ): Promise<SplineApplication> => {
     const { Application } = await import('@splinetool/runtime');
     const app = new Application(canvas);
-    await app.load(`${basePath}brain.splinecode`);
+    await app.load(`${basePath}brain_colorstest1.splinecode`);
     return app;
 };
 

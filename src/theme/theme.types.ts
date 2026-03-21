@@ -1,5 +1,7 @@
 // src/theme/theme.types.ts
 
+export type Language = 'en' | 'es' | 'fr' | 'de';
+
 export interface ThemeColors {
     primary: string;
     secondary: string;
@@ -8,6 +10,9 @@ export interface ThemeColors {
     primaryTransparent: string;
     primaryGlow: string;
     darkButtonTransparent: string;
+    splineColor: string;
+    splineFresnel: string;
+    splineLighting: string;
 }
 
 export interface ThemeTypography {
@@ -25,7 +30,7 @@ export interface AppTheme {
     buttonScale: number;
     reducedMotion: boolean;
     highContrast: boolean;
-    language: 'en' | 'es' | 'fr' | 'de';
+    language: Language;
 }
 
 

@@ -2,10 +2,15 @@
 import React from "react";
 import { useTheme } from "../../../context/themeContext";
 import { type ProjectCardProps } from "./types";
+import { PROJECTS_TRANSLATIONS } from "../../../locales";
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
     const { theme } = useTheme();
-    const { title, subtitle, description, status, link, img } = project;
+    const t = PROJECTS_TRANSLATIONS[theme.language];
+    const { id, status, link, img } = project;
+    const projectData = t.projects[id];
+    const statusLabel = t.statusLabels[status];
+
 
     // Map status to display text & color
     const statusColors: Record<string, string> = {
@@ -19,11 +24,13 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
 
     return (
         <div
-            className="shrink-0 lg:w-[calc(50%-1rem)] snap-start p-6 sm:p-8 rounded-xl border-2 flex flex-col h-full w-full" // w-full
+            className="shrink-0 lg:w-[calc(50%-1rem)] snap-start p-6 sm:p-8 rounded-xl border-2 flex flex-col h-full w-full"
             style={{
-                borderColor: theme.colors.primary,
-                backgroundColor: theme.colors.secondary,
+                borderColor: 'var(--color-primary)',
+                backgroundColor: 'var(--color-secondary)',
             }}
+            role="article"
+            aria-label={`${projectData.title}: ${projectData.subtitle}`}
         >
 
             {/* HEADER */}
@@ -32,11 +39,11 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
                     <h2
                         className="text-xl sm:text-2xl lg:text-3xl font-light italic"
                         style={{
-                            color: theme.colors.primary,
-                            fontFamily: theme.typography.primaryFontFamily,
+                            color: 'var(--color-primary)',
+                            fontFamily: 'var(--font-primary)',
                         }}
                     >
-                        {title}
+                        {projectData.title}
                     </h2>
 
                     <span
@@ -46,20 +53,20 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
                             color: "#000",
                         }}
                     >
-                        {status.replace("-", " ")}
+                        {statusLabel}
                     </span>
                 </div>
 
-                {subtitle && (
+                {projectData.subtitle && (
                     <h3
                         className="text-sm sm:text-base italic mb-3"
                         style={{
-                            color: theme.colors.primary,
-                            fontFamily: theme.typography.secondaryFontFamily,
+                            color: 'var(--color-primary)',
+                            fontFamily: 'var(--font-secondary)',
                             opacity: 0.8,
                         }}
                     >
-                        {subtitle}
+                        {projectData.subtitle}
                     </h3>
                 )}
             </div>
@@ -68,13 +75,13 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
             <p
                 className="text-sm sm:text-base leading-relaxed mb-4 text-justify hide-on-small-height"
                 style={{
-                    color: theme.colors.primary,
-                    fontFamily: theme.typography.secondaryFontFamily,
-                    fontSize: `${16 * theme.typography.fontScale}px`,
+                    color: 'var(--color-primary)',
+                    fontFamily: 'var(--font-secondary)',
+                    fontSize: 'calc(16px * var(--font-scale))',
                     whiteSpace: "pre-wrap",
                 }}
             >
-                {description}
+                {projectData.description}
             </p>
 
             {/* FLEXIBLE IMAGE AREA */}
@@ -82,7 +89,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
                 <div className="flex-1 flex items-center justify-center overflow-hidden rounded-lg hide-on-small-height">
                     <img
                         src={img}
-                        alt={title}
+                        alt={`${projectData.title}: ${projectData.subtitle}`}
                         className="max-w-full max-h-full object-contain"
                     />
                 </div>
@@ -95,9 +102,9 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="mt-4 text-sm font-medium underline hover:opacity-80 w-fit"
-                    style={{ color: theme.colors.primary }}
+                    style={{ color: 'var(--color-primary)' }}
                 >
-                    View more →
+                    {t.viewMore}
                 </a>
             )}
 
