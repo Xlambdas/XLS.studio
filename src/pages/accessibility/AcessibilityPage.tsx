@@ -4,13 +4,14 @@ import { useTheme } from '../../context/themeContext';
 import { useState } from 'react';
 import { DEFAULT_THEME } from '../../theme/theme.defaults';
 import { ColorsPanel, LanguagePanel, MotionPanel, SizesPanel, TypographyPanel } from './panels';
-import { LivePreview } from './components'
+import { LivePreview } from './components';
 
 import { RotateCcw } from 'lucide-react';
 
 import { ACCESSIBILITY_TRANSLATIONS } from '../../locales';
-import { createTabs } from './constants';
 import { useAccessibilityHandlers } from './hooks/useAccessibilityHandlers';
+import { createTabs } from './utils';
+
 
 
 export const AccessibilityPage: React.FC = () => {

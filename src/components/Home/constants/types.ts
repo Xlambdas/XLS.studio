@@ -1,5 +1,5 @@
 // /constant/types.ts
-import React from 'react';
+import React, { type RefObject } from 'react';
 
 export type SplineApplication = {
     load(path: string): Promise<void>;
@@ -24,6 +24,7 @@ export interface SectionProps {
     className?: string;
 }
 
+// Added for scroll navigation
 export interface ScrollContainerProps {
     children: React.ReactNode;
     section: number;
@@ -32,3 +33,30 @@ export interface ScrollContainerProps {
     className?: string;
 }
 
+export interface UseScrollNavigationProps {
+    maxSection: number;
+    scrollRef?: RefObject<HTMLDivElement | null>;
+    onSectionChange: (section: number) => void;
+    onSplineUpdate: (section: number) => void;
+}
+
+// Added for snap scroll
+export interface UseSnapScrollProps {
+    maxSection: number;
+    onSectionChange: (section: number) => void;
+    onSplineUpdate: (section: number) => void;
+}
+
+export interface TouchState {
+    startY: number;
+    startTime: number;
+    isDragging: boolean;
+}
+
+
+// Added for touch navigation
+export interface UseTouchNavigationProps {
+    onSwipe: (direction: number) => void;
+    tolerance?: number; //added
+    preventScrollOnSwipe?: boolean; // added
+}

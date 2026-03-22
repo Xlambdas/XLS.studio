@@ -1,12 +1,6 @@
-import { useRef, useCallback, type RefObject } from 'react';
+import { useRef, useCallback } from 'react';
 import { HOME_CONFIG } from '../../../constants/home.config.ts';
-
-interface UseScrollNavigationProps {
-    maxSection: number;
-    scrollRef?: RefObject<HTMLDivElement | null>;
-    onSectionChange: (section: number) => void;
-    onSplineUpdate: (section: number) => void;
-}
+import { type UseScrollNavigationProps } from '../constants';
 
 export const useScrollNavigation = ({
     maxSection,

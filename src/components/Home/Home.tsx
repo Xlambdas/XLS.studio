@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Header } from '../Header';
-import { HOME_TRANSLATIONS } from '../../locales';
+import { useTheme } from "../../context/themeContext";
+import { KEYFRAMES } from '../../styles';
+import { HOME_CONFIG } from '../../constants/home.config.ts';
 
-// Imports
 import {
     ScrollContainer,
     Section,
@@ -20,12 +20,11 @@ import {
     updateSplineColors,
 } from './utils';
 import { LoadingIndicator, UpArrowButton, DownArrowButton } from '../common';
-import { KEYFRAMES } from '../../styles';
-import { HOME_CONFIG } from '../../constants/home.config.ts';
-import { useTheme } from "../../context/themeContext";
+import { Header } from '../Header';
+import { HOME_TRANSLATIONS } from '../../locales';
 import { WelcomeSection, AboutSection, SandboxSection } from "./sections";
 
-// last correct version - but still probleme with scrolling on mobile; 19/03 16:00
+// last correct version - 22/03 8:00
 export const Home: React.FC = () => {
     // --------------
     // Refs and State
@@ -143,19 +142,6 @@ export const Home: React.FC = () => {
 
         window.addEventListener('resize', handleResize);
 
-        // return () => {
-        //     window.removeEventListener('resize', handleResize);
-
-        //     if (!isTouchDeviceRef.current) {
-        //         window.removeEventListener('wheel', wheelListener);
-        //     } else {
-        //         window.removeEventListener('touchstart', touchStartListener);
-        //         window.removeEventListener('touchend', touchEndListener);
-        //         window.removeEventListener('touchmove', touchMoveListener);
-        //     }
-
-        //     appRef.current = null;
-        // };
         return () => {
             window.removeEventListener('resize', handleResize);
 
@@ -184,15 +170,6 @@ export const Home: React.FC = () => {
     useEffect(() => {
         if (theme.reducedMotion) setAnimationsEnabled(false);
     }, [theme.reducedMotion]);
-
-    // Sync theme colors to Spline
-    // useEffect(() => {
-    //     updateSplineColors(appRef.current, {
-    //         color: theme.colors.splineColor,      // Dark main color
-    //         fresnel: theme.colors.splineFresnel,      // Primary accent border
-    //         lighting: theme.colors.splineLighting,     // Primary accent highlight
-    //     });
-    // }, [theme.colors.splineColor, theme.colors.splineFresnel, theme.colors.splineLighting, appRef]);
 
     // Sync theme colors to Spline
     useEffect(() => {

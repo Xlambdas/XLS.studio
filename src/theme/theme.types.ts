@@ -1,7 +1,5 @@
 // src/theme/theme.types.ts
-
-export type Language = 'en' | 'es' | 'fr' | 'de';
-
+import { type Language } from '../pages/accessibility';
 export interface ThemeColors {
     primary: string;
     secondary: string;
@@ -31,16 +29,4 @@ export interface AppTheme {
     reducedMotion: boolean;
     highContrast: boolean;
     language: Language;
-}
-
-
-export interface AppTheme_old {
-    colors: ThemeColors;
-    typography: ThemeTypography;
-    /** Button size multiplier. 0.85 | 1 | 1.3 */
-    buttonScale: number;
-    /** Disables transitions and Spline glow effects */
-    reducedMotion: boolean;
-    /** Forces white-on-black regardless of custom colors */
-    highContrast: boolean;
 }

@@ -7,15 +7,7 @@ import React, {
 } from 'react';
 import { type AppTheme, DEFAULT_THEME } from '../theme';
 import { computeSplineColors, getColors } from '../styles';
-
-// =========
-// Context shape
-// =========
-// interface ThemeContextValue_old {
-//     theme: AppTheme;
-//     updateTheme: (partial: Partial<AppTheme>) => void;
-//     resetTheme: () => void;
-// }
+import type { Language } from '../pages/accessibility';
 
 interface ThemeContextValue {
     theme: AppTheme;
@@ -25,7 +17,7 @@ interface ThemeContextValue {
     updateFontScale: (scale: number) => void;
     updateButtonScale: (scale: number) => void;
     updateMotion: (enabled: boolean) => void;
-    updateLanguage: (lang: 'en' | 'es' | 'fr' | 'de') => void; // ← NEW
+    updateLanguage: (lang: Language) => void; // ← NEW
 }
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
@@ -135,7 +127,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         setTheme(prev => ({ ...prev, reducedMotion: enabled }));
     }, []);
 
-    const updateLanguage = useCallback((lang: 'en' | 'es' | 'fr' | 'de') => {
+    const updateLanguage = useCallback((lang: Language) => {
         setTheme(prev => ({ ...prev, language: lang }));
     }, []);
 

@@ -1,8 +1,8 @@
 // src/App.tsx
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
-import { AccessibilityPage } from './pages/accessibility/AcessibilityPage';
-import { Home } from './components/Home';
-import { ProjectsPage } from './pages/projects/ProjectsPage';
+import { AccessibilityPage } from './pages/accessibility';
+import { ProjectsPage } from './pages/projects';
+import { Home } from './components';
 
 function App() {
     return (

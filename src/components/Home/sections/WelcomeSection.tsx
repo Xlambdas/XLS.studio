@@ -5,7 +5,6 @@ import type { AppTheme } from "../../../theme";
 import { HOME_TRANSLATIONS } from "../../../locales";
 
 export const WelcomeSection: React.FC<{ theme: AppTheme, t: typeof HOME_TRANSLATIONS['en'] }> = ({ t }) => {
-    // const t = HOME_TRANSLATIONS[theme.language];
 
     return (
         <div

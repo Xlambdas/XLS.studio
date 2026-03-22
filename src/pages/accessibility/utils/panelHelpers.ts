@@ -1,22 +1,5 @@
-// src/pages/accessibility/constants.ts
-import { Palette, Type, Ruler, Globe, Wind } from 'lucide-react';
-
-export type TabId = 'colors' | 'typography' | 'sizes' | 'language' | 'motion';
-
-export interface TabItem {
-    id: TabId;
-    label: string;
-    icon: React.ElementType;
-    panel: string;
-}
-
-export const TAB_CONFIG: Record<TabId, React.ElementType> = {
-    colors: Palette,
-    typography: Type,
-    sizes: Ruler,
-    language: Globe,
-    motion: Wind,
-};
+import type { ColorsPanelProps } from "../constants/types";
+import { TAB_CONFIG, type TabItem } from "../constants";
 
 export const createTabs = (t: any): TabItem[] => [
     { id: 'colors', label: t.colors, icon: TAB_CONFIG.colors, panel: 'colors-panel' },
@@ -25,3 +8,11 @@ export const createTabs = (t: any): TabItem[] => [
     { id: 'language', label: t.language, icon: TAB_CONFIG.language, panel: 'language-panel' },
     { id: 'motion', label: t.motion, icon: TAB_CONFIG.motion, panel: 'motion-panel' },
 ];
+
+export const getPresetNames = (t: ColorsPanelProps['t']) => ({
+    'Purple Night': t.presetPurpleNight,
+    'Ocean Blue': t.presetOceanBlue,
+    'Sunset': t.presetSunset,
+    'Forest Green': t.presetForestGreen,
+    'Light Mode': t.presetLightMode,
+});

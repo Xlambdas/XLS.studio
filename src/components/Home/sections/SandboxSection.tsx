@@ -3,12 +3,8 @@ import React from "react";
 import { type AppTheme } from "../../../theme";
 import { PrimaryButton } from "../../common";
 import { HOME_TRANSLATIONS } from "../../../locales";
-// import { useTheme } from "../../../context/themeContext";
-
 
 export const SandboxSection: React.FC<{ theme: AppTheme, t: typeof HOME_TRANSLATIONS['en'] }> = ({ t }) => {
-    // const { theme: themeContext } = useTheme();
-    // const t = HOME_TRANSLATIONS[theme.language];
 
     return (
         <div
@@ -36,7 +32,7 @@ export const SandboxSection: React.FC<{ theme: AppTheme, t: typeof HOME_TRANSLAT
             </h2>
 
             <div
-                className="flex flex-col justify-center items-center" // my-0 sm:my-auto
+                className="flex flex-col justify-center items-center"
                 style={{
                     gap: 'clamp(30px, 6vh, 100px)'
                 }}

@@ -1,5 +1,5 @@
 // src/locales/components.ts
-import { type Language } from '../theme';
+import { type Language } from '../pages/accessibility';
 
 export interface ComponentTranslations {
     loadingMessage: string;
@@ -16,7 +16,7 @@ export const COMPONENT_TRANSLATIONS: Record<Language, ComponentTranslations> = {
     es: {
         loadingMessage: 'Cargando…',
         previousSection: 'Sección anterior',
-        nextSection: 'Siguiente sección',
+        nextSection: 'Sección siguiente',
     },
     fr: {
         loadingMessage: 'Chargement…',
@@ -25,7 +25,12 @@ export const COMPONENT_TRANSLATIONS: Record<Language, ComponentTranslations> = {
     },
     de: {
         loadingMessage: 'Wird geladen…',
-        previousSection: 'Vorheriger Abschnitt',
-        nextSection: 'Nächster Abschnitt',
+        previousSection: 'Vorherige Sektion',
+        nextSection: 'Nächste Sektion',
+    },
+    it: {
+        loadingMessage: 'Caricamento…',
+        previousSection: 'Sezione precedente',
+        nextSection: 'Sezione successiva',
     },
 };

@@ -4,7 +4,7 @@ import { useTheme } from '../../context/themeContext';
 import React, { useEffect, useState } from 'react';
 import { projects } from './data/projectsData';
 import { Header, Carousel } from '../../components';
-import { ProjectCard } from './components/ProjectCard';
+import { ProjectCard } from './components';
 import { PROJECTS_TRANSLATIONS } from '../../locales';
 
 

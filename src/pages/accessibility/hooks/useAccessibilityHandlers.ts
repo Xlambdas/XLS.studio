@@ -1,9 +1,8 @@
 // src/pages/accessibility/hooks/useAccessibilityHandlers.ts
 import { useCallback } from 'react';
 import { useTheme } from '../../../context/themeContext';
-import { updateSplineColors } from '../../../components/Home/utils';
+import { updateSplineColors } from '../../../components';
 import { computeSplineColors } from '../../../styles';
-
 
 export const useAccessibilityHandlers = () => {
     const { theme, updateTheme, updateColor, updateFontScale, updateButtonScale, updateMotion } = useTheme();
@@ -26,29 +25,6 @@ export const useAccessibilityHandlers = () => {
             });
         }
     }, [updateColor, theme.colors]);
-
-    // const handleColorChange = useCallback(
-    //     (colorKey: 'primary' | 'secondary' | 'background', value: string) => {
-    //         updateColor(colorKey, value);
-
-    //         const app = (window as any).__app;
-    //         const updatedColors = { ...theme.colors, [colorKey]: value };
-    //         const newSplineColors = {
-    //             splineColor: lightenColor(updatedColors.background, 5),
-    //             splineFresnel: updatedColors.primary,
-    //             splineLighting: updatedColors.secondary,
-    //         };
-
-    //         updateTheme({ colors: { ...updatedColors, ...newSplineColors } });
-
-    //         updateSplineColors(app, {
-    //             color: newSplineColors.splineColor,
-    //             fresnel: newSplineColors.splineFresnel,
-    //             lighting: newSplineColors.splineLighting,
-    //         });
-    //     },
-    //     [updateColor, updateTheme, theme.colors]
-    // );
 
     const handleFontChange = useCallback(
         (fontFamily: string, type: 'primary' | 'secondary') => {

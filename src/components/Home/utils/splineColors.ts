@@ -1,5 +1,4 @@
 // src/components/Home/utils/splineColors.ts
-import type { Application } from '@splinetool/runtime';
 
 export const updateSplineColors = (
     app: any,
@@ -9,8 +8,6 @@ export const updateSplineColors = (
         lighting: string;
     }
 ) => {
-    console.log('updateSplineColors called with:', colors);
-
     if (!app) {
         console.warn('updateSplineColors: app is null');
         return;
@@ -37,30 +34,6 @@ export const updateSplineColors = (
             if (app.requestRender) {
                 app.requestRender();
             }
-
-            console.log('Brain colors UPDATED');
-        } else {
-            console.warn('Brain object or material not found');
-        }
-    } catch (e) {
-        console.warn('Spline color update failed', e);
-    }
-};
-
-export const updateSplineColors_save = (
-    app: Application | null,
-    color: string
-) => {
-    if (!app) return;
-
-    try {
-        const brain = app.findObjectByName('Brain_Part_06');
-        console.log('Brain object:', brain);
-
-        if (brain && brain.material) {
-            // Update material color
-            // brain.material.color = color;
-            console.log('Brain color updated to:', color);
         } else {
             console.warn('Brain object or material not found');
         }

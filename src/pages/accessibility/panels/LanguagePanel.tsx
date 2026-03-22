@@ -1,25 +1,5 @@
 // src/pages/accessibility/panels/LanguagePanel.tsx
-import { type AppTheme } from '../../../theme/theme.types';
-
-interface LanguagePanelProps {
-    theme: AppTheme;
-    language: 'en' | 'es' | 'fr' | 'de';
-    onLanguageChange: (lang: 'en' | 'es' | 'fr' | 'de') => void;
-    t: {
-        label: string;
-    };
-}
-
-type Language = 'en' | 'es' | 'fr' | 'de';
-
-const LANGUAGES: Language[] = ['en', 'es', 'fr', 'de'];
-
-const LANGUAGE_NAMES: Record<Language, string> = {
-    en: 'English',
-    es: 'Español',
-    fr: 'Français',
-    de: 'Deutsch',
-};
+import { type LanguagePanelProps, LANGUAGE_NAMES, LANGUAGES } from '../constants';
 
 export const LanguagePanel: React.FC<LanguagePanelProps> = ({ language, onLanguageChange, t }) => {
     return (
