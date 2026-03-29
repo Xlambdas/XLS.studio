@@ -6,10 +6,7 @@ import {
     PortfolioHero,
     AboutMe,
     Skills,
-    Timeline,
     Contact,
-    Values,
-    Interests
 } from './section';
 import { SideNavigation } from './components/SideNavigator';
 import { useNavigate } from 'react-router-dom';
