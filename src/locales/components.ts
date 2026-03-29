@@ -1,5 +1,5 @@
 // src/locales/components.ts
-import { type Language } from '../pages/accessibility';
+import { type Language } from '../pages/settings';
 
 export interface ComponentTranslations {
     loadingMessage: string;

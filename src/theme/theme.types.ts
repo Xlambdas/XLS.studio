@@ -1,5 +1,5 @@
 // src/theme/theme.types.ts
-import { type Language } from '../pages/accessibility';
+import { type Language } from '../pages/settings';
 export interface ThemeColors {
     primary: string;
     secondary: string;

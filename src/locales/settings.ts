@@ -1,7 +1,7 @@
 // src/locales/accessibility.ts
-import { type Language } from '../pages/accessibility';
+import { type Language } from '../pages/settings';
 
-export interface AccessibilityTranslation {
+export interface SettingsTranslation {
     title: string;
     back: string;
     reset: string;
@@ -30,9 +30,9 @@ export interface AccessibilityTranslation {
     presetLightMode: string;
 }
 
-export const ACCESSIBILITY_TRANSLATIONS: Record<Language, AccessibilityTranslation> = {
+export const SETTINGS_TRANSLATIONS: Record<Language, SettingsTranslation> = {
     en: {
-        title: 'Accessibility Settings',
+        title: 'Settings',
         back: '← Back',
         reset: 'Reset All Settings',
         colors: 'Colors',
@@ -60,7 +60,7 @@ export const ACCESSIBILITY_TRANSLATIONS: Record<Language, AccessibilityTranslati
         presetLightMode: 'Light Mode',
     },
     es: {
-        title: 'Configuración de accesibilidad',
+        title: 'Configuración',
         back: '← Volver',
         reset: 'Restablecer todos los ajustes',
         colors: 'Colores',
@@ -88,7 +88,7 @@ export const ACCESSIBILITY_TRANSLATIONS: Record<Language, AccessibilityTranslati
         presetLightMode: 'Modo claro',
     },
     fr: {
-        title: 'Paramètres d’accessibilité',
+        title: 'Paramètres',
         back: '← Retour',
         reset: 'Réinitialiser tous les paramètres',
         colors: 'Couleurs',
@@ -116,7 +116,7 @@ export const ACCESSIBILITY_TRANSLATIONS: Record<Language, AccessibilityTranslati
         presetLightMode: 'Mode clair',
     },
     de: {
-        title: 'Einstellungen zur Barrierefreiheit',
+        title: 'Einstellungen',
         back: '← Zurück',
         reset: 'Alle Einstellungen zurücksetzen',
         colors: 'Farben',
@@ -144,7 +144,7 @@ export const ACCESSIBILITY_TRANSLATIONS: Record<Language, AccessibilityTranslati
         presetLightMode: 'Heller Modus',
     },
     it: {
-        title: 'Impostazioni di accessibilità',
+        title: 'Impostazioni',
         back: '← Indietro',
         reset: 'Ripristina tutte le impostazioni',
         colors: 'Colori',

@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import { type AppTheme, DEFAULT_THEME } from '../theme';
 import { computeSplineColors, getColors } from '../styles';
-import type { Language } from '../pages/accessibility';
+import type { Language } from '../pages/settings';
 
 interface ThemeContextValue {
     theme: AppTheme;

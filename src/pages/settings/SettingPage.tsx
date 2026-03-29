@@ -8,23 +8,23 @@ import { LivePreview } from './components';
 
 import { RotateCcw } from 'lucide-react';
 
-import { ACCESSIBILITY_TRANSLATIONS } from '../../locales';
-import { useAccessibilityHandlers } from './hooks/useAccessibilityHandlers';
+import { SETTINGS_TRANSLATIONS } from '../../locales';
+import { useSettingsHandlers } from './hooks/useSettingsHandlers';
 import { createTabs } from './utils';
 
 
 
-export const AccessibilityPage: React.FC = () => {
+export const SettingsPage: React.FC = () => {
     const navigate = useNavigate();
     const { theme, updateTheme, updateLanguage } = useTheme();
     const [activeTab, setActiveTab] = useState('colors');
     const [isResetHovering, setIsResetHovering] = useState(false);
 
     const language = theme.language;
-    const t = ACCESSIBILITY_TRANSLATIONS[language];
+    const t = SETTINGS_TRANSLATIONS[language];
     const tabs = createTabs(t);
 
-    const { handleColorChange, handleFontChange, handleScaleChange, handleToggle } = useAccessibilityHandlers();
+    const { handleColorChange, handleFontChange, handleScaleChange, handleToggle } = useSettingsHandlers();
 
     return (
         <div

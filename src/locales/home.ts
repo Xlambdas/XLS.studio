@@ -1,5 +1,5 @@
 // src/locales/home.ts
-import { type Language } from '../pages/accessibility';
+import { type Language } from '../pages/settings';
 
 export interface HomeTranslations {
     // Welcome Section
@@ -11,7 +11,7 @@ export interface HomeTranslations {
     aboutTitle: string;
     aboutDescription: string;
     myProjects: string;
-    myPortfolio: string;
+    myJourney: string;
 
     // Sandbox Section
     sandboxTitle: string;
@@ -32,7 +32,7 @@ export const HOME_TRANSLATIONS: Record<Language, HomeTranslations> = {
         aboutTitle: 'FROM KNOWLEDGE TO SYSTEMS',
         aboutDescription: 'I design structured digital environments that transform complex knowledge into interactive tools. From cognitive science to UI systems, each project explores how humans think, learn, and interact.',
         myProjects: 'My Projects',
-        myPortfolio: 'My Portfolio',
+        myJourney: 'My Journey',
         sandboxTitle: 'THE SANDBOX',
         sandboxDescription: 'A controlled environment for experimentation, iteration, and structured exploration.',
         discoverMore: 'Discover more',
@@ -47,7 +47,7 @@ export const HOME_TRANSLATIONS: Record<Language, HomeTranslations> = {
         aboutTitle: 'DEL CONOCIMIENTO A LOS SISTEMAS',
         aboutDescription: 'Diseño entornos digitales estructurados que transforman conocimientos complejos en herramientas interactivas. Desde la ciencia cognitiva hasta los sistemas de interfaz, cada proyecto explora cómo las personas piensan, aprenden e interactúan.',
         myProjects: 'Mis proyectos',
-        myPortfolio: 'Mi portafolio',
+        myJourney: 'Mi trayectoria',
         sandboxTitle: 'EL SANDBOX',
         sandboxDescription: 'Un entorno controlado para la experimentación, la iteración y la exploración estructurada.',
         discoverMore: 'Descubrir más',
@@ -62,7 +62,7 @@ export const HOME_TRANSLATIONS: Record<Language, HomeTranslations> = {
         aboutTitle: 'DU SAVOIR AUX SYSTÈMES',
         aboutDescription: 'Je conçois des environnements numériques structurés qui transforment des connaissances complexes en outils interactifs. Des sciences cognitives aux systèmes d’interface, chaque projet explore la manière dont les humains pensent, apprennent et interagissent.',
         myProjects: 'Mes projets',
-        myPortfolio: 'Mon portfolio',
+        myJourney: 'Mon parcours',
         sandboxTitle: 'LE BAC À SABLE',
         sandboxDescription: 'Un environnement contrôlé dédié à l’expérimentation, à l’itération et à l’exploration structurée.',
         discoverMore: 'Découvrir plus',
@@ -77,7 +77,7 @@ export const HOME_TRANSLATIONS: Record<Language, HomeTranslations> = {
         aboutTitle: 'VOM WISSEN ZU SYSTEMEN',
         aboutDescription: 'Ich entwickle strukturierte digitale Umgebungen, die komplexes Wissen in interaktive Werkzeuge verwandeln. Von der Kognitionswissenschaft bis zu UI-Systemen untersucht jedes Projekt, wie Menschen denken, lernen und interagieren.',
         myProjects: 'Meine Projekte',
-        myPortfolio: 'Mein Portfolio',
+        myJourney: 'Meine Reise',
         sandboxTitle: 'DIE SANDBOX',
         sandboxDescription: 'Eine kontrollierte Umgebung für Experimente, Iteration und strukturierte Erkundung.',
         discoverMore: 'Mehr entdecken',
@@ -92,7 +92,7 @@ export const HOME_TRANSLATIONS: Record<Language, HomeTranslations> = {
         aboutTitle: 'DALLA CONOSCENZA AI SISTEMI',
         aboutDescription: 'Progetto ambienti digitali strutturati che trasformano conoscenze complesse in strumenti interattivi. Dalle scienze cognitive ai sistemi UI, ogni progetto esplora come le persone pensano, apprendono e interagiscono.',
         myProjects: 'I miei progetti',
-        myPortfolio: 'Il mio portfolio',
+        myJourney: 'Il mio percorso',
         sandboxTitle: 'IL SANDBOX',
         sandboxDescription: 'Un ambiente controllato per sperimentazione, iterazione ed esplorazione strutturata.',
         discoverMore: 'Scopri di più',

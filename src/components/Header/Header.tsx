@@ -68,7 +68,7 @@ export const Header: React.FC<HeaderProps> = ({
                 )}
 
                 <button
-                    onClick={() => navigate("/accessibility")}
+                    onClick={() => navigate("/settings")}
                     className="header-button transition-opacity hover:opacity-70"
                     style={{
                         fontFamily: 'var(--font-secondary)',
@@ -76,7 +76,7 @@ export const Header: React.FC<HeaderProps> = ({
                         borderColor: 'var(--color-primary)'
                     }}
                 >
-                    {t.accessibility}
+                    {t.settings}
                 </button>
 
                 {/* <button

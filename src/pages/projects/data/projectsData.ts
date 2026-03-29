@@ -26,11 +26,4 @@ export const projects: Project[] = [
         description: "A full project on Unity. But no spoilers, you'll find out soon!",
         status: "started",
     },
-    {
-        id: 4,
-        title: "Upcoming Project",
-        subtitle: "TBA",
-        description: "Currently in progress, please be patient...",
-        status: "not-started",
-    },
 ];

@@ -2,68 +2,78 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useTheme } from '../../context/themeContext';
 import { Header } from '../../components';
 import { PORTFOLIO_TRANSLATIONS } from '../../locales';
-import { PortfolioHero, AboutMe, CaseStudies, Contact, Skills } from './section';
+import {
+    PortfolioHero,
+    AboutMe,
+    Skills,
+    Timeline,
+    Contact,
+    Values,
+    Interests
+} from './section';
 import { SideNavigation } from './components/SideNavigator';
 import { useNavigate } from 'react-router-dom';
 
+type SectionId = 'hero' | 'about' | 'skills' | 'timeline' | 'contact';
+
+interface SectionRefs {
+    [key: string]: HTMLElement | null;
+}
+
 export const PortfolioPage: React.FC = () => {
     const { theme } = useTheme();
-    const [animationsEnabled, setAnimationsEnabled] = useState(true);
-    const [activeSection, setActiveSection] = useState('hero');
-    const [sidebarWidth, setSidebarWidth] = useState(320);
-    const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-    const t = PORTFOLIO_TRANSLATIONS[theme.language];
     const navigate = useNavigate();
 
+    // State
+    const [animationsEnabled, setAnimationsEnabled] = useState(true);
+    const [activeSection, setActiveSection] = useState<SectionId>('hero');
+    const [sidebarWidth, setSidebarWidth] = useState(320);
+    const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
-    // Refs for each section
-    const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({
-        hero: null,
-        about: null,
-        work: null,
-        skills: null,
-        contact: null,
-    });
+    // Refs
+    const sectionRefs = useRef<SectionRefs>({});
+    const t = PORTFOLIO_TRANSLATIONS[theme.language];
 
+    // Effect: Handle reduced motion preference
     useEffect(() => {
-        if (theme.reducedMotion) setAnimationsEnabled(false);
+        if (theme.reducedMotion) {
+            setAnimationsEnabled(false);
+        }
     }, [theme.reducedMotion]);
 
-    // Load sidebar preferences from localStorage
+    // Effect: Load sidebar preferences
     useEffect(() => {
-        const saved = localStorage.getItem('portfolio-sidebar');
-        if (saved) {
-            const { width, collapsed } = JSON.parse(saved);
-            setSidebarWidth(width);
-            setSidebarCollapsed(collapsed);
-        }
-
-        // Listen for changes from SideNavigation
-        const handleStorageChange = () => {
-            const updated = localStorage.getItem('portfolio-sidebar');
-            if (updated) {
-                const { width, collapsed } = JSON.parse(updated);
+        const loadSidebarPreferences = () => {
+            const saved = localStorage.getItem('portfolio-sidebar');
+            if (saved) {
+                const { width, collapsed } = JSON.parse(saved);
                 setSidebarWidth(width);
                 setSidebarCollapsed(collapsed);
             }
         };
 
-        window.addEventListener('storage', handleStorageChange);
-        return () => window.removeEventListener('storage', handleStorageChange);
+        loadSidebarPreferences();
+        window.addEventListener('storage', loadSidebarPreferences);
+
+        return () => window.removeEventListener('storage', loadSidebarPreferences);
     }, []);
 
-    // Handle scroll detection
+    // Effect: Handle scroll detection for active section
     useEffect(() => {
         const handleScroll = () => {
             const sections = Object.entries(sectionRefs.current);
 
             for (const [sectionId, ref] of sections) {
-                if (ref) {
-                    const rect = ref.getBoundingClientRect();
-                    if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
-                        setActiveSection(sectionId);
-                        break;
-                    }
+                if (!ref) continue;
+
+                const rect = ref.getBoundingClientRect();
+                const isInViewport =
+                    rect.top <= window.innerHeight / 2 &&
+                    rect.bottom >= window.innerHeight / 2;
+
+                if (isInViewport) {
+                    setActiveSection(sectionId as SectionId);
+                    break;
                 }
             }
         };
@@ -72,14 +82,16 @@ export const PortfolioPage: React.FC = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Handle navigation
+    // Handlers
     const handleNavigate = (sectionId: string) => {
         const element = sectionRefs.current[sectionId];
         if (element) {
             element.scrollIntoView({ behavior: 'smooth' });
-            setActiveSection(sectionId);
+            setActiveSection(sectionId as SectionId);
         }
     };
+
+    const handleBackButton = () => navigate(-1);
 
     return (
         <div style={{ backgroundColor: 'var(--color-background)' }}>
@@ -88,34 +100,15 @@ export const PortfolioPage: React.FC = () => {
                 animationsEnabled={animationsEnabled}
                 setAnimationsEnabled={setAnimationsEnabled}
             />
-            {/* Mobile Header */}
+
+            {/* Mobile Back Button */}
             {sidebarCollapsed && (
-                <div
-                    className="fixed top-0 left-0 right-0 lg:hidden z-50 px-4 sm:px-6 py-3 sm:py-4"
-                    style={{
-                        backgroundColor: 'var(--color-background)',
-                        borderBottomWidth: '2px',
-                        borderColor: 'var(--color-primary)',
-                    }}
-                >
-                    <button
-                        onClick={() => navigate(-1)}
-                        className="text-lg font-light italic transition-opacity hover:opacity-70"
-                        style={{ color: 'var(--color-primary)' }}
-                    >
-                        {t.back}
-                    </button>
-                </div>
+                <MobileBackButton onClick={handleBackButton} label={t.navigation.back} />
             )}
 
+            {/* Desktop Back Button */}
             {sidebarCollapsed && (
-                <button
-                    onClick={() => navigate(-1)}
-                    className="hidden lg:block fixed left-8 top-18 z-50 text-xl font-light italic transition-opacity hover:opacity-70"
-                    style={{ color: 'var(--color-primary)' }}
-                >
-                    {t.back}
-                </button>
+                <DesktopBackButton onClick={handleBackButton} label={t.navigation.back} />
             )}
 
             {/* Side Navigation */}
@@ -123,56 +116,180 @@ export const PortfolioPage: React.FC = () => {
                 t={t}
                 activeSection={activeSection}
                 onNavigate={handleNavigate}
-                onWidthChange={(width) => setSidebarWidth(width)}
-                onCollapseChange={(collapsed) => setSidebarCollapsed(collapsed)}
+                onWidthChange={setSidebarWidth}
+                onCollapseChange={setSidebarCollapsed}
             />
 
-            <main className="min-h-screen hidden lg:block"
-                style={{
-                    marginLeft: sidebarCollapsed ? '0' : `${sidebarWidth}px`,
-                    transition: 'margin-left 0.3s ease',
-                }}
-            >
-                {/* Hero Section */}
-                <section
-                    ref={(el) => { sectionRefs.current.hero = el; }}
-                    id="hero"
-                >
-                    <PortfolioHero t={t} />
-                </section>
-
-                {/* About Section */}
-                <section
-                    ref={(el) => { sectionRefs.current.about = el; }}
-                    id="about"
-                >
-                    <AboutMe t={t} />
-                </section>
-
-                {/* Case Studies Section */}
-                <section
-                    ref={(el) => { sectionRefs.current.work = el; }}
-                    id="work"
-                >
-                    <CaseStudies t={t} animationsEnabled={animationsEnabled} />
-                </section>
-
-                {/* Skills Section */}
-                <section
-                    ref={(el) => { sectionRefs.current.skills = el; }}
-                    id="skills"
-                >
-                    <Skills t={t} />
-                </section>
-
-                {/* Contact Section */}
-                <section
-                    ref={(el) => { sectionRefs.current.contact = el; }}
-                    id="contact"
-                >
-                    <Contact t={t} />
-                </section>
-            </main>
+            {/* Main Content */}
+            <MainContent
+                sidebarCollapsed={sidebarCollapsed}
+                sidebarWidth={sidebarWidth}
+                sectionRefs={sectionRefs}
+                t={t}
+            />
         </div>
+    );
+};
+
+// Sub-components for clarity
+interface BackButtonProps {
+    onClick: () => void;
+    label: string;
+}
+
+const MobileBackButton: React.FC<BackButtonProps> = ({ onClick, label }) => (
+    <div
+        className="fixed top-0 left-0 right-0 lg:hidden z-50 px-4 sm:px-6 py-3 sm:py-4"
+        style={{
+            backgroundColor: 'var(--color-background)',
+            borderBottomWidth: '2px',
+            borderColor: 'var(--color-primary)',
+        }}
+    >
+        <button
+            onClick={onClick}
+            className="text-lg font-light italic transition-opacity hover:opacity-70"
+            style={{ color: 'var(--color-primary)' }}
+        >
+            {label}
+        </button>
+    </div>
+);
+
+const DesktopBackButton: React.FC<BackButtonProps> = ({ onClick, label }) => (
+    <button
+        onClick={onClick}
+        className="hidden lg:block fixed left-8 top-18 z-50 text-xl font-light italic transition-opacity hover:opacity-70"
+        style={{ color: 'var(--color-primary)' }}
+    >
+        {label}
+    </button>
+);
+
+interface MainContentProps {
+    sidebarCollapsed: boolean;
+    sidebarWidth: number;
+    sectionRefs: React.MutableRefObject<SectionRefs>;
+    t: any;
+}
+
+const MainContent: React.FC<MainContentProps> = ({
+    sidebarCollapsed,
+    sidebarWidth,
+    sectionRefs,
+    t,
+}) => (
+    <main
+        className="min-h-screen hidden lg:block"
+        style={{
+            marginLeft: sidebarCollapsed ? '0' : `${sidebarWidth}px`,
+            transition: 'margin-left 0.3s ease',
+        }}
+    >
+        <Section
+            id="hero"
+            sectionRefs={sectionRefs}
+            component={<PortfolioHero t={t} />}
+        />
+        <Section
+            id="about"
+            sectionRefs={sectionRefs}
+            component={<AboutMe t={t} />}
+        />
+        <Section
+            id="skills"
+            sectionRefs={sectionRefs}
+            component={<Skills t={t} />}
+        />
+        <Section
+            id="timeline"
+            sectionRefs={sectionRefs}
+            component={<PlaceholderSection title={t.timeline?.title || 'Timeline'} />}
+        />
+        <Section
+            id="interests"
+            sectionRefs={sectionRefs}
+            component={<PlaceholderSection title={t.interests?.title || 'Interests'} />}
+        />
+        <Section
+            id="values"
+            sectionRefs={sectionRefs}
+            component={<PlaceholderSection title={t.values?.title || 'Values'} description={t.values?.description} />}
+        />
+        <Section
+            id="contact"
+            sectionRefs={sectionRefs}
+            component={<Contact t={t} />}
+        />
+    </main>
+);
+
+interface SectionProps {
+    id: string;
+    sectionRefs: React.MutableRefObject<SectionRefs>;
+    component: React.ReactNode;
+}
+
+const Section: React.FC<SectionProps> = ({ id, sectionRefs, component }) => (
+    <section
+        ref={(el) => {
+            if (el) sectionRefs.current[id] = el;
+        }}
+        id={id}
+    >
+        {component}
+    </section>
+);
+
+
+
+
+// ============================================================================
+// PLACEHOLDER COMPONENT (Use this for sections under development)
+// ============================================================================
+interface PlaceholderSectionProps {
+    title: string;
+    description?: string;
+}
+
+export const PlaceholderSection: React.FC<PlaceholderSectionProps> = ({
+    title,
+    description = 'This section is currently under development. Coming soon.'
+}) => {
+    return (
+        <section
+            className="min-h-screen py-20 px-4 flex items-center"
+            role="region"
+            aria-label={`${title} section (placeholder)`}
+        >
+            <div className="max-w-3xl mx-auto w-full text-center">
+                <h2
+                    className="text-4xl sm:text-5xl font-light italic mb-6"
+                    style={{
+                        color: 'var(--color-primary)',
+                        fontFamily: 'var(--font-primary)',
+                    }}
+                >
+                    {title}
+                </h2>
+
+                <div
+                    className="bg-opacity-10 border-2 border-dashed rounded p-8"
+                    style={{
+                        borderColor: 'var(--color-primary)',
+                    }}
+                >
+                    <p
+                        className="text-lg opacity-70"
+                        style={{
+                            color: 'var(--color-primary)',
+                            fontFamily: 'var(--font-secondary)',
+                        }}
+                    >
+                        {description}
+                    </p>
+                </div>
+            </div>
+        </section>
     );
 };

@@ -10,18 +10,19 @@ export const PortfolioHero: React.FC<PortfolioHeroProps> = ({ t }) => {
         <section
             className="h-screen flex flex-col justify-center items-center px-4"
             role="region"
-            aria-label="Portfolio introduction"
+            aria-label={t.hero.ariaLabel}
         >
-            <div className="max-w-3xl text-center">
+            <div className="max-w-3xl text-center space-y-6">
                 <h1
-                    className="text-5xl sm:text-7xl font-light italic mb-6"
+                    className="text-5xl sm:text-7xl font-light italic"
                     style={{
                         color: 'var(--color-primary)',
                         fontFamily: 'var(--font-primary)',
                     }}
                 >
-                    {t.heroTitle}
+                    {t.hero.title}
                 </h1>
+
                 <p
                     className="text-xl sm:text-2xl font-light"
                     style={{
@@ -29,7 +30,7 @@ export const PortfolioHero: React.FC<PortfolioHeroProps> = ({ t }) => {
                         fontFamily: 'var(--font-secondary)',
                     }}
                 >
-                    {t.heroSubtitle}
+                    {t.hero.subtitle}
                 </p>
             </div>
         </section>

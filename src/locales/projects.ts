@@ -1,5 +1,5 @@
 // src/locales/projects.ts
-import { type Language } from '../pages/accessibility';
+import { type Language } from '../pages/settings';
 
 export interface ProjectsTranslations {
     // Page labels

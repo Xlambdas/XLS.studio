@@ -68,8 +68,8 @@ export const AboutSection: React.FC<{ theme: AppTheme, t: typeof HOME_TRANSLATIO
                         {t.myProjects}
                     </PrimaryButton>
 
-                    <PrimaryButton variant="large" disabled={true} onClick={() => navigate('/portfolio')}>
-                        {t.myPortfolio}
+                    <PrimaryButton variant="large" disabled={false} onClick={() => navigate('/portfolio')}>
+                        {t.myJourney}
                     </PrimaryButton>
                 </div>
             </div>

@@ -4,7 +4,7 @@ import { useTheme } from '../../../context/themeContext';
 import { updateSplineColors } from '../../../components';
 import { computeSplineColors } from '../../../styles';
 
-export const useAccessibilityHandlers = () => {
+export const useSettingsHandlers = () => {
     const { theme, updateTheme, updateColor, updateFontScale, updateButtonScale, updateMotion } = useTheme();
 
     const handleColorChange = useCallback((colorKey: 'primary' | 'secondary' | 'background', value: string) => {

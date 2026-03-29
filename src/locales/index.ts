@@ -1,4 +1,4 @@
-export { ACCESSIBILITY_TRANSLATIONS } from './accessibility';
+export { SETTINGS_TRANSLATIONS } from './settings';
 export { COMPONENT_TRANSLATIONS } from './components';
 export { HEADER_TRANSLATIONS } from './header';
 export { HOME_TRANSLATIONS } from './home';

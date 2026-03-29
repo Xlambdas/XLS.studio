@@ -1,36 +1,36 @@
 // src/locales/header.ts
-import { type Language } from '../pages/accessibility';
+import { type Language } from '../pages/settings';
 
 export interface HeaderTranslations {
     animationsOn: string;
     animationsOff: string;
-    accessibility: string;
+    settings: string;
 }
 
 export const HEADER_TRANSLATIONS: Record<Language, HeaderTranslations> = {
     en: {
         animationsOn: 'Animations enabled',
         animationsOff: 'Animations disabled',
-        accessibility: 'Accessibility',
+        settings: 'Settings',
     },
     es: {
         animationsOn: 'Animaciones activadas',
         animationsOff: 'Animaciones desactivadas',
-        accessibility: 'Accesibilidad',
+        settings: 'Configuración',
     },
     fr: {
         animationsOn: 'Animations activées',
         animationsOff: 'Animations désactivées',
-        accessibility: 'Accessibilité',
+        settings: 'Paramètres',
     },
     de: {
         animationsOn: 'Animationen aktiviert',
         animationsOff: 'Animationen deaktiviert',
-        accessibility: 'Barrierefreiheit',
+        settings: 'Einstellungen',
     },
     it: {
         animationsOn: 'Animazioni attivate',
         animationsOff: 'Animazioni disattivate',
-        accessibility: 'Accessibilità',
+        settings: 'Impostazioni',
     },
 };
