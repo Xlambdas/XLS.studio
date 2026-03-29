@@ -1,28 +1,6 @@
 import React, { useState } from 'react';
-import { type PortfolioTranslations } from '../../../locales';
 import { ChevronDown } from 'lucide-react';
-
-interface SkillsProps {
-    t: PortfolioTranslations;
-    // Skill data can be passed as prop or defined internally
-    skillData?: {
-        [key: string]: {
-            subcategories: {
-                [key: string]: string[];
-            };
-        };
-    };
-}
-
-interface SkillCategory {
-    key: string;
-    title: string;
-    description: string;
-    subcategories: Array<{
-        name: string;
-        skills: string[];
-    }>;
-}
+import type { SkillsProps, SkillCategory } from '../constants';
 
 export const Skills: React.FC<SkillsProps> = ({ t }) => {
     const [expandedCategories, setExpandedCategories] = useState<Set<number>>(

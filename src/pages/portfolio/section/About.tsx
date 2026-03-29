@@ -1,9 +1,5 @@
 import React from 'react';
-import { type PortfolioTranslations } from '../../../locales';
-
-interface AboutMeProps {
-    t: PortfolioTranslations;
-}
+import type { AboutMeProps } from '../constants';
 
 export const AboutMe: React.FC<AboutMeProps> = ({ t }) => {
     return (
@@ -11,39 +7,6 @@ export const AboutMe: React.FC<AboutMeProps> = ({ t }) => {
             className="min-h-screen py-20 px-4 flex items-center"
             role="region"
             aria-label={t.about.ariaLabel}
-        >
-            <div className="max-w-3xl mx-auto w-full">
-                <h2
-                    className="text-4xl sm:text-5xl font-light italic mb-8"
-                    style={{
-                        color: 'var(--color-primary)',
-                        fontFamily: 'var(--font-primary)',
-                    }}
-                >
-                    {t.about.title}
-                </h2>
-
-                <p
-                    className="text-lg leading-relaxed"
-                    style={{
-                        color: 'var(--color-primary)',
-                        fontFamily: 'var(--font-secondary)',
-                    }}
-                >
-                    {t.about.description}
-                </p>
-            </div>
-        </section>
-    );
-};
-
-
-export const AboutMe_save: React.FC<AboutMeProps> = ({ t }) => {
-    return (
-        <section
-            className="min-h-screen py-20 px-4 flex items-center"
-            role="region"
-            aria-label="About me section"
         >
             <div className="max-w-3xl mx-auto w-full">
                 <h2

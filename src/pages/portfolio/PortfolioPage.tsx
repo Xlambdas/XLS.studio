@@ -6,6 +6,9 @@ import {
     PortfolioHero,
     AboutMe,
     Skills,
+    Timeline,
+    // Interests,
+    // Values,
     Contact,
 } from './section';
 import { SideNavigation } from './components/SideNavigator';
@@ -201,7 +204,7 @@ const MainContent: React.FC<MainContentProps> = ({
         <Section
             id="timeline"
             sectionRefs={sectionRefs}
-            component={<PlaceholderSection title={t.timeline?.title || 'Timeline'} />}
+            component={<Timeline t={t} />}
         />
         <Section
             id="interests"

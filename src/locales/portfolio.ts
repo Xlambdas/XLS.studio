@@ -1,5 +1,7 @@
 import type { Language } from '../pages/settings';
 
+export type EntryType = 'studies' | 'work' | 'personal' | 'project' | 'event' | 'education' | 'other';
+
 export interface PortfolioTranslations {
     // Navigation
     navigation: {
@@ -153,8 +155,9 @@ export interface PortfolioTranslations {
         ariaLabel: string;
         entries?: {
             [key: number]: {
-                startDate: string;
-                endDate?: string;
+                startDate?: string;
+                endDate: string;
+                type: EntryType;
                 title: string;
                 description: string;
             };
@@ -360,28 +363,17 @@ export const PORTFOLIO_TRANSLATIONS: Record<Language, PortfolioTranslations> = {
             },
         },
 
-        // Timeline Section (placeholder for future implementation)
         timeline: {
-            title: 'Journey',
-            description: 'My professional timeline and milestones',
-            ariaLabel: 'Timeline section',
+            title: "Timeline",
+            description: "A path through design, code, and research.",
+            ariaLabel: "Timeline section",
             entries: {
-                0: {
-                    startDate: '2024',
-                    title: 'Recent Project',
-                    description: 'Description coming soon',
-                },
-                1: {
-                    startDate: '2023',
-                    title: 'Experience',
-                    description: 'Description coming soon',
-                },
-                2: {
-                    startDate: '2022',
-                    title: 'Education',
-                    description: 'Description coming soon',
-                },
-            },
+                0: { startDate: "2026-02-02", endDate: "2026-06-30", title: "Game dev internship", type: "education", description: "Developed a game concept and prototype using Unity and C#." },
+                1: { startDate: "2021-09", endDate: "2026-01", title: "Bachelor MIASHS", type: "education", description: "At the University of Bordeaux, focusing on cognitive science and human-computer interaction." },
+                2: { endDate: "2021-06", title: "French baccalauréat", type: "education", description: "Completed high school education with a focus on science and mathematics." },
+                3: { startDate: "2026-02", endDate: "2026-03", title: "Portfolio Launch", type: "work", description: "Launching this portfolio to showcase my work and journey." },
+                4: { startDate: "2025-05", endDate: "2026-09", title: "Plugin GOL", type: "project", description: "Developed a plugin for the note taking application (Obsidian)." },
+            }
         },
 
         // Interests Section (placeholder for future implementation)
@@ -564,9 +556,9 @@ export const PORTFOLIO_TRANSLATIONS: Record<Language, PortfolioTranslations> = {
             description: 'Mi evolución profesional y hitos',
             ariaLabel: 'Sección de cronología',
             entries: {
-                0: { startDate: '2024', title: 'Proyecto reciente', description: 'Descripción próximamente' },
-                1: { startDate: '2023', title: 'Experiencia', description: 'Descripción próximamente' },
-                2: { startDate: '2022', title: 'Educación', description: 'Descripción próximamente' },
+                0: { endDate: '2024', title: 'Proyecto reciente', type: 'project', description: 'Descripción próximamente' },
+                1: { endDate: '2023', title: 'Experiencia', type: 'event', description: 'Descripción próximamente' },
+                2: { endDate: '2022', title: 'Educación', type: 'education', description: 'Descripción próximamente' },
             },
         },
 
@@ -733,9 +725,9 @@ export const PORTFOLIO_TRANSLATIONS: Record<Language, PortfolioTranslations> = {
             description: 'Mon évolution et mes étapes clés',
             ariaLabel: 'Section chronologie',
             entries: {
-                0: { startDate: '2024', title: 'Projet récent', description: 'Description bientôt disponible' },
-                1: { startDate: '2023', title: 'Expérience', description: 'Description bientôt disponible' },
-                2: { startDate: '2022', title: 'Formation', description: 'Description bientôt disponible' },
+                0: { endDate: '2024', title: 'Projet récent', type: 'project', description: 'Description bientôt disponible' },
+                1: { endDate: '2023', title: 'Expérience', type: 'event', description: 'Description bientôt disponible' },
+                2: { endDate: '2022', title: 'Formation', type: 'education', description: 'Description bientôt disponible' },
             },
         },
 
@@ -898,9 +890,9 @@ export const PORTFOLIO_TRANSLATIONS: Record<Language, PortfolioTranslations> = {
             description: 'Mein beruflicher Weg und wichtige Meilensteine',
             ariaLabel: 'Zeitachsen Bereich',
             entries: {
-                0: { startDate: '2024', title: 'Aktuelles Projekt', description: 'Beschreibung folgt' },
-                1: { startDate: '2023', title: 'Erfahrung', description: 'Beschreibung folgt' },
-                2: { startDate: '2022', title: 'Ausbildung', description: 'Beschreibung folgt' },
+                0: { endDate: '2024', title: 'Aktuelles Projekt', type: 'project', description: 'Beschreibung folgt' },
+                1: { endDate: '2023', title: 'Erfahrung', type: 'event', description: 'Beschreibung folgt' },
+                2: { endDate: '2022', title: 'Ausbildung', type: 'education', description: 'Beschreibung folgt' },
             },
         },
 
@@ -1073,9 +1065,9 @@ export const PORTFOLIO_TRANSLATIONS: Record<Language, PortfolioTranslations> = {
             description: 'Il mio percorso professionale e le tappe principali',
             ariaLabel: 'Sezione cronologia',
             entries: {
-                0: { startDate: '2024', title: 'Progetto recente', description: 'Descrizione in arrivo' },
-                1: { startDate: '2023', title: 'Esperienza', description: 'Descrizione in arrivo' },
-                2: { startDate: '2022', title: 'Formazione', description: 'Descrizione in arrivo' },
+                0: { endDate: '2024', title: 'Progetto recente', type: 'project', description: 'Descrizione in arrivo' },
+                1: { endDate: '2023', title: 'Esperienza', type: 'event', description: 'Descrizione in arrivo' },
+                2: { endDate: '2022', title: 'Formazione', type: 'education', description: 'Descrizione in arrivo' },
             },
         },
 
