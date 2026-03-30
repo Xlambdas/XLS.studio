@@ -29,6 +29,17 @@ export const PortfolioPage: React.FC = () => {
     const [activeSection, setActiveSection] = useState<SectionId>('hero');
     const [sidebarWidth, setSidebarWidth] = useState(320);
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+    const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
+
+    // Track viewport width for responsive sidebar
+    useEffect(() => {
+        const handleResize = () => {
+            setViewportWidth(window.innerWidth);
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     // Refs
     const sectionRefs = useRef<SectionRefs>({});
@@ -112,18 +123,20 @@ export const PortfolioPage: React.FC = () => {
             )}
 
             {/* Side Navigation */}
-            <SideNavigation
-                t={t}
-                activeSection={activeSection}
-                onNavigate={handleNavigate}
-                onWidthChange={setSidebarWidth}
-                onCollapseChange={setSidebarCollapsed}
-            />
+            {viewportWidth >= 1024 && (
+                <SideNavigation
+                    t={t}
+                    activeSection={activeSection}
+                    onNavigate={handleNavigate}
+                    onWidthChange={setSidebarWidth}
+                    onCollapseChange={setSidebarCollapsed}
+                />
+            )}
 
             {/* Main Content */}
             <MainContent
-                sidebarCollapsed={sidebarCollapsed}
-                sidebarWidth={sidebarWidth}
+                sidebarCollapsed={viewportWidth < 1024 ? true : sidebarCollapsed}
+                sidebarWidth={viewportWidth < 1024 ? 0 : Math.min(sidebarWidth, viewportWidth * 0.3)}
                 sectionRefs={sectionRefs}
                 t={t}
             />
@@ -140,7 +153,7 @@ interface BackButtonProps {
 const MobileBackButton: React.FC<BackButtonProps> = ({ onClick, label }) => (
     <button
         onClick={onClick}
-        className="fixed left-4 sm:left-6 top-17 sm:top-17 lg:hidden z-50 font-light italic transition-opacity hover:opacity-70 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-transparent rounded"
+        className="fixed left-4 sm:left-6 top-17 sm:top-24 lg:hidden z-50 font-light italic transition-opacity hover:opacity-70 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-transparent rounded"
         style={{
             color: 'var(--color-primary)',
             backdropFilter: 'blur(8px)',
@@ -184,59 +197,6 @@ interface MainContentProps {
     t: any;
 }
 
-const MainContent: React.FC<MainContentProps> = ({
-    sidebarCollapsed,
-    sidebarWidth,
-    sectionRefs,
-    t,
-}) => (
-    <main
-        className="w-full"
-        style={{
-            marginLeft: sidebarCollapsed ? '0' : `${sidebarWidth}px`,
-            width: sidebarCollapsed ? '100vw' : `calc(100vw - ${sidebarWidth}px)`,
-            transition: 'margin-left 0.3s ease, width 0.3s ease',
-            overflow: 'hidden',
-        }}
-    >
-        <Section
-            id="hero"
-            sectionRefs={sectionRefs}
-            component={<PortfolioHero t={t} />}
-        />
-        <Section
-            id="about"
-            sectionRefs={sectionRefs}
-            component={<AboutMe t={t} />}
-        />
-        <Section
-            id="skills"
-            sectionRefs={sectionRefs}
-            component={<Skills t={t} />}
-        />
-        <Section
-            id="timeline"
-            sectionRefs={sectionRefs}
-            component={<Timeline t={t} />}
-        />
-        <Section
-            id="interests"
-            sectionRefs={sectionRefs}
-            component={<PlaceholderSection title={t.interests?.title || 'Interests'} />}
-        />
-        <Section
-            id="values"
-            sectionRefs={sectionRefs}
-            component={<PlaceholderSection title={t.values?.title || 'Values'} description={t.values?.description} />}
-        />
-        <Section
-            id="contact"
-            sectionRefs={sectionRefs}
-            component={<Contact t={t} />}
-        />
-    </main>
-);
-
 interface SectionProps {
     id: string;
     sectionRefs: React.MutableRefObject<SectionRefs>;
@@ -253,10 +213,6 @@ const Section: React.FC<SectionProps> = ({ id, sectionRefs, component }) => (
         {component}
     </section>
 );
-
-
-
-
 // ============================================================================
 // PLACEHOLDER COMPONENT (Use this for sections under development)
 // ============================================================================
@@ -304,5 +260,74 @@ export const PlaceholderSection: React.FC<PlaceholderSectionProps> = ({
                 </div>
             </div>
         </section>
+    );
+};
+
+const MainContent: React.FC<MainContentProps> = ({
+    sidebarCollapsed,
+    sidebarWidth,
+    sectionRefs,
+    t,
+}) => {
+    const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setViewportWidth(window.innerWidth);
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+    const effectiveMargin = sidebarCollapsed ? 0 : sidebarWidth;
+
+    const effectiveWidth = `calc(100vw - ${effectiveMargin}px)`;
+
+    return (
+        <main
+            className="w-screen"
+            style={{
+                marginLeft: `${effectiveMargin}px`,
+                width: `calc(100vw - ${effectiveMargin}px)`,
+                transition: 'margin-left 0.3s ease, width 0.3s ease',
+                overflow: 'hidden',
+            }}
+        >
+            <Section
+                id="hero"
+                sectionRefs={sectionRefs}
+                component={<PortfolioHero t={t} />}
+            />
+            <Section
+                id="about"
+                sectionRefs={sectionRefs}
+                component={<AboutMe t={t} />}
+            />
+            <Section
+                id="skills"
+                sectionRefs={sectionRefs}
+                component={<Skills t={t} />}
+            />
+            <Section
+                id="timeline"
+                sectionRefs={sectionRefs}
+                component={<Timeline t={t} />}
+            />
+            <Section
+                id="interests"
+                sectionRefs={sectionRefs}
+                component={<PlaceholderSection title={t.interests?.title || 'Interests'} />}
+            />
+            <Section
+                id="values"
+                sectionRefs={sectionRefs}
+                component={<PlaceholderSection title={t.values?.title || 'Values'} description={t.values?.description} />}
+            />
+            <Section
+                id="contact"
+                sectionRefs={sectionRefs}
+                component={<Contact t={t} />}
+            />
+        </main>
     );
 };

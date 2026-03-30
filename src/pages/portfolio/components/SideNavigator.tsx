@@ -42,14 +42,22 @@ export const SideNavigation: React.FC<SideNavigationProps> = ({
     const startWidthRef = useRef(0);
 
     // Load saved preferences
+    // Load saved preferences (but force closed if small screen)
     useEffect(() => {
+        const isSmallScreen = window.innerWidth < 1024;
+
         const saved = localStorage.getItem('portfolio-sidebar');
         if (saved) {
             const { width: savedWidth, collapsed } = JSON.parse(saved);
             setWidth(savedWidth);
-            setIsCollapsed(collapsed);
+            // Force closed on small screens, otherwise use saved state
+            setIsCollapsed(isSmallScreen ? true : collapsed);
             onWidthChange(savedWidth);
-            onCollapseChange(collapsed);
+            onCollapseChange(isSmallScreen ? true : collapsed);
+        } else {
+            // No saved preference: force closed on small screens
+            setIsCollapsed(isSmallScreen ? true : false);
+            onCollapseChange(isSmallScreen ? true : false);
         }
     }, [onWidthChange, onCollapseChange]);
 
@@ -58,14 +66,12 @@ export const SideNavigation: React.FC<SideNavigationProps> = ({
         localStorage.setItem('portfolio-sidebar', JSON.stringify({ width, collapsed: isCollapsed }));
     }, [width, isCollapsed]);
 
-    // Auto-collapse sidebar on small screens
+    // REMOVE the condition - always force closed on small screens
     useEffect(() => {
         const checkScreenSize = () => {
             if (window.innerWidth < 1024) {
-                if (!isCollapsed) {
-                    setIsCollapsed(true);
-                    onCollapseChange(true);
-                }
+                setIsCollapsed(true);          // ← Always set
+                onCollapseChange(true);        // ← No condition
             }
         };
 
@@ -73,7 +79,7 @@ export const SideNavigation: React.FC<SideNavigationProps> = ({
         window.addEventListener('resize', checkScreenSize);
 
         return () => window.removeEventListener('resize', checkScreenSize);
-    }, [isCollapsed, onCollapseChange]);
+    }, [onCollapseChange]);
 
     // Build file structure from translations
     const fileStructure: FileItem[] = [
